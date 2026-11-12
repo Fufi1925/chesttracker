@@ -1,7 +1,7 @@
 <Window x:Class="ChestTracker.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="ChestTracker" Width="540" Height="810" MinWidth="480" MinHeight="650" Background="#101216" Foreground="#F7F8FA" WindowStartupLocation="CenterScreen">
  <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="30">
  <TextBlock Text="ChestTracker" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="Privater Windows-Client · Replay zuerst" Foreground="#969DAA" Margin="0,8,0,25"/>
- <TextBlock Text="API-Adresse (HTTPS)"/><TextBox x:Name="ServerUrl" Text="https://chesttracker.vercel.app"/>
+ <TextBlock Text="API-Adresse (HTTPS)"/><TextBox x:Name="ServerUrl" Text="https://chesttracker-fufi1925s-projects.vercel.app"/>
  <TextBlock Text="Benutzername"/><TextBox x:Name="Username"/>
  <TextBlock Text="Passwort"/><PasswordBox x:Name="Password"/>
  <WrapPanel><Button x:Name="LoginButton" Content="Anmelden" Click="Login_Click"/><Button Content="Abmelden" Click="Logout_Click"/><Button Content="Verbindung prüfen" Click="Check_Click"/></WrapPanel>
