@@ -9,7 +9,9 @@ Geprüft: 20 API-Tests, 13 Detektortests, 2 Windows-Pixeltests und 3 Browser-Tes
 
 Download: `ChestTracker-win-x64.zip` vollständig entpacken und `ChestTracker.exe` starten. Keine separate .NET-Installation erforderlich. `SHA256SUMS.txt` prüft das Paket. Dieses Release enthält keine Zugangsdaten.
 
-Grenzen: Live-Erkennung, Fortnite-Regelverträglichkeit und Genauigkeit sind unvalidiert; Live-Aufnahme ist deaktiviert. GUI/Overlay/Hotkeys auf dem Ziel-PC manuell prüfen. Die EXE ist nicht codesigniert. Zusätzlich zum App-Login ist derzeit Vercel Deployment Protection aktiv; ohne ausdrückliche Anpassung kann diese den Freundes-/Desktop-Zugang blockieren.
+Grenzen: Live-Erkennung, Fortnite-Regelverträglichkeit und Genauigkeit sind unvalidiert; Live-Aufnahme ist deaktiviert. GUI/Overlay/Hotkeys auf dem Ziel-PC manuell prüfen. Die EXE ist nicht codesigniert.
+
+Aktualisierung zur Einrichtung: Nach ausdrücklicher Nutzerfreigabe ist der zusätzliche Vercel-Anmeldeschutz für Produktion deaktiviert. Website und EXE verwenden direkt den verpflichtenden ChestTracker-Login. Die ältere Schutzwarnung in der mitgelieferten README ist damit erledigt; die EXE muss dafür nicht neu heruntergeladen werden. Eine Schritt-für-Schritt-Anleitung steht unter `docs/ERSTE_SCHRITTE.md` im Repository.
 
 Website: https://chesttracker-fufi1925s-projects.vercel.app
 

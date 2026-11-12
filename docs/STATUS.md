@@ -12,4 +12,4 @@ Echte Fortnite-Erkennung, geeignete eigene Öffnungshinweise, Genauigkeit, Resso
 
 Privates GitHub-Repository und Vercel-Projekt verwenden die vom Benutzer verbundenen Konten. PostgreSQL wird durch die Neon-Integration bereitgestellt. Railway-Projekterstellung war wegen erschöpfter Ressourcen nicht möglich; Railway wird für dieses Projekt nicht verwendet.
 
-Vercel Deployment Protection bleibt zusätzlich zum ChestTracker-Login aktiv, solange keine ausdrückliche Freigabe für die Änderung dieses Schutzes vorliegt. Damit können sowohl Freunde als auch der Windows-Client an der vorgelagerten Schutzschicht blockiert werden. Die automatische Freigabeprüfung hatte die geplante Änderung auf Preview-only abgelehnt; es wurde keine Umgehung eingebaut.
+Nach ausdrücklicher Zustimmung des Nutzers ist Vercel Deployment Protection auf Vorschau-Deployments beschränkt. Die Produktionswebsite und die Desktop-API sind direkt erreichbar. Der ChestTracker-Login und sämtliche serverseitigen Rechteprüfungen bleiben aktiv. Das frühere Startpasswort von Fufi wurde bereits ersetzt; der Nutzer verwendet sein selbst gesetztes Passwort.

@@ -2,7 +2,7 @@
 
 1. `ChestTracker-win-x64.zip` aus dem privaten Release herunterladen und vollständig entpacken.
 2. `ChestTracker.exe` unter Windows 10/11 x64 starten. Selbstenthaltend; keine separate .NET-Runtime nötig. Unsigned, daher kann Windows eine Herausgeberwarnung zeigen.
-3. API-Basisadresse der Website eintragen, ohne `/api` oder andere Pfade. Verbindung prüfen. Wenn Vercel Deployment Protection aktiv ist, kann sie Desktop-Zugriff zusätzlich blockieren; sie muss vor Nutzung des Desktop-Logins ausdrücklich passend konfiguriert werden.
+3. API-Basisadresse `https://chesttracker-fufi1925s-projects.vercel.app` prüfen, ohne `/api` oder andere Pfade. Verbindung prüfen. Der zusätzliche Vercel-Schutz ist für Produktion nach ausdrücklicher Nutzerfreigabe deaktiviert; der ChestTracker-Login bleibt erforderlich.
 4. Mit dem zentralen ChestTracker-Benutzernamen anmelden. Beim ersten Login das Startpasswort ändern. Die App speichert keine Klartextpasswörter.
 5. `replays/synthetic-two-openings.json` als Beobachtungs-Replay laden. Erwartung: Lobby → Match → genau zwei eigene Öffnungen; eine Teamkamerad-Meldung zählt nicht → Lobby ohne alte Truhenzahl.
 6. Replay ist standardmäßig lokal. Die Option „Replay ausdrücklich an den Server senden“ schreibt nach einem Bestätigungsdialog **echte Testdatensätze** in die zentrale Statistik. Nur für bewusste Testläufe verwenden; anschließend kann der Admin sie nachvollziehbar löschen.
