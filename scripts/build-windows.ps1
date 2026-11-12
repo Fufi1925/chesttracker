@@ -20,7 +20,15 @@ Copy-Item docs/ERSTE_SCHRITTE.md artifacts/windows/START-HIER.txt -Force
 Copy-Item docs/THIRD_PARTY.md artifacts/windows/THIRD_PARTY.md -Force
 New-Item -ItemType Directory -Force artifacts/windows/licenses | Out-Null
 Copy-Item .local/ocr/APACHE-2.0.txt,.local/ocr/LEPTONICA-LICENSE.txt artifacts/windows/licenses -Force
-$verify = Start-Process (Resolve-Path artifacts/windows/ChestTracker.exe) -ArgumentList '--verify-ocr' -Wait -PassThru
-if ($verify.ExitCode -ne 0) { throw 'Published EXE could not load bundled OCR engine/models' }
+$verifyInfo = [System.Diagnostics.ProcessStartInfo]::new((Resolve-Path artifacts/windows/ChestTracker.exe).Path, '--verify-ocr')
+$verifyInfo.UseShellExecute = $false
+$verifyInfo.RedirectStandardError = $true
+$verifyInfo.RedirectStandardOutput = $true
+$verify = [System.Diagnostics.Process]::Start($verifyInfo)
+$verifyOutput = $verify.StandardOutput.ReadToEnd()
+$verifyError = $verify.StandardError.ReadToEnd()
+$verify.WaitForExit()
+Write-Host "Published OCR verification exit code: $($verify.ExitCode)"
+if ($verify.ExitCode -ne 0) { Write-Host $verifyOutput; Write-Host $verifyError; throw 'Published EXE could not load bundled OCR engine/models' }
 Compress-Archive -Path artifacts/windows/* -DestinationPath artifacts/ChestTracker-win-x64.zip -Force
 Get-FileHash artifacts/ChestTracker-win-x64.zip -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  ChestTracker-win-x64.zip" } | Set-Content artifacts/SHA256SUMS.txt

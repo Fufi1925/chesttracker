@@ -9,7 +9,7 @@ public partial class App : System.Windows.Application
         {
             StartupUri=null;
             try{TesseractEnviornment.CustomSearchPath=AppContext.BaseDirectory;using var engine=new TesseractEngine(Path.Combine(AppContext.BaseDirectory,"tessdata"),"deu+eng",EngineMode.LstmOnly);Shutdown(0);}
-            catch{Shutdown(1);}
+            catch(Exception error){Console.Error.WriteLine(error);Shutdown(1);}
             return;
         }
         base.OnStartup(e);
