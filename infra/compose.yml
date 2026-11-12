@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: chesttracker
+      POSTGRES_USER: chesttracker
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run node scripts/local-env.mjs first}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U chesttracker -d chesttracker']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+  web:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://chesttracker:${POSTGRES_PASSWORD}@postgres:5432/chesttracker
+      CT_LOCAL_HTTP: '1'
+    ports:
+      - '127.0.0.1:3000:3000'
+    volumes:
+      - ../.secrets:/app/.secrets
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://localhost:3000/api/health').then(r=>{if(!r.ok)process.exit(1)})"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+volumes:
+  postgres-data:

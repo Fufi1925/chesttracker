@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.vercel/
+.env*
+!.env.example
+.secrets/
+.local/
+artifacts/
+test-results/
+playwright-report/
+bin/
+obj/
+*.tsbuildinfo
+*.user

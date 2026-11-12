@@ -1,0 +1,13 @@
+.git
+.secrets
+.local
+.env*
+node_modules
+**/node_modules
+**/.next
+**/bin
+**/obj
+artifacts
+test-results
+playwright-report
+infra/.env

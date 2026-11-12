@@ -1,0 +1,19 @@
+<Window x:Class="ChestTracker.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="ChestTracker" Width="540" Height="810" MinWidth="480" MinHeight="650" Background="#101216" Foreground="#F7F8FA" WindowStartupLocation="CenterScreen">
+ <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="30">
+ <TextBlock Text="ChestTracker" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="Privater Windows-Client · Replay zuerst" Foreground="#969DAA" Margin="0,8,0,25"/>
+ <TextBlock Text="API-Adresse (HTTPS)"/><TextBox x:Name="ServerUrl" Text="https://chesttracker.vercel.app"/>
+ <TextBlock Text="Benutzername"/><TextBox x:Name="Username"/>
+ <TextBlock Text="Passwort"/><PasswordBox x:Name="Password"/>
+ <WrapPanel><Button x:Name="LoginButton" Content="Anmelden" Click="Login_Click"/><Button Content="Abmelden" Click="Logout_Click"/><Button Content="Verbindung prüfen" Click="Check_Click"/></WrapPanel>
+ <StackPanel x:Name="ChangePanel" Visibility="Collapsed" Margin="0,20,0,0"><TextBlock Text="Startpasswort ändern (mindestens 12 Zeichen)"/><PasswordBox x:Name="NewPassword"/><Button Content="Neues Passwort speichern" Click="Change_Click"/></StackPanel>
+ <Border Background="#1B1D22" Padding="16" CornerRadius="8" Margin="0,22,0,12"><StackPanel><TextBlock x:Name="ConnectionText" Text="Nicht verbunden" TextWrapping="Wrap"/><TextBlock x:Name="DetectorText" Text="Spielstatus unbekannt" Foreground="#969DAA" Margin="0,9,0,0" TextWrapping="Wrap"/><TextBlock x:Name="QueueText" Text="Warteschlange: 0" Foreground="#969DAA" Margin="0,9,0,0"/></StackPanel></Border>
+ <TextBlock Text="Offline-Erkennung" FontSize="17" FontWeight="SemiBold" Margin="0,16,0,8"/>
+ <TextBlock Text="Replay-Datei mit synthetischen Beobachtungen oder Bildmanifest laden. Bildanalyse bleibt lokal. Keine Live-Aufnahme des Spiels." Foreground="#969DAA" TextWrapping="Wrap" FontSize="12"/>
+ <CheckBox x:Name="SyncReplay" Content="Replay ausdrücklich an den Server senden (Testdaten)" Foreground="#CCD1DA" Margin="0,16,0,0"/>
+ <WrapPanel><Button Content="Beobachtungs-Replay" Click="Replay_Click"/><Button Content="Bild-Replay" Click="ImageReplay_Click"/><Button Content="Pausieren / Fortsetzen" Click="Pause_Click"/></WrapPanel>
+ <TextBlock Text="Overlay" FontSize="17" FontWeight="SemiBold" Margin="0,24,0,4"/>
+ <WrapPanel><Button Content="Anzeigen / Ausblenden" Click="Toggle_Click"/><Button Content="Website öffnen" Click="Website_Click"/><Button Content="Einstellungen speichern" Click="Save_Click"/></WrapPanel>
+ <WrapPanel Margin="0,12,0,0"><TextBlock Text="Globaler Hotkey: " VerticalAlignment="Center"/><ComboBox x:Name="Hotkey" Width="100" SelectedIndex="0" SelectionChanged="Hotkey_Changed"><ComboBoxItem Content="O"/><ComboBoxItem Content="F8"/><ComboBoxItem Content="F9"/></ComboBox></WrapPanel>
+ <TextBlock Text="O blendet nur das Overlay aus. Erkennung und Synchronisierung laufen weiter. Live-Erkennung ist unvalidiert und deaktiviert. Für ein späteres Overlay über dem Spiel den randlosen Fenstermodus verwenden; exklusives Vollbild kann die Anzeige verhindern." Foreground="#737E90" TextWrapping="Wrap" FontSize="11" Margin="0,20,0,0"/>
+ </StackPanel></ScrollViewer>
+</Window>

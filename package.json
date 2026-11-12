@@ -1,0 +1,27 @@
+{
+  "name": "chesttracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w apps/web",
+    "build": "npm run build -w apps/web",
+    "start": "npm run start -w apps/web",
+    "typecheck": "npm run typecheck -w apps/web",
+    "test": "node --import tsx --test --test-concurrency=1 tests/*.test.ts",
+    "test:browser": "playwright test",
+    "setup": "node --import tsx scripts/setup.ts",
+    "migrate": "node --import tsx scripts/migrate.ts"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.16",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^24.0.0",
+    "prettier": "^3.6.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

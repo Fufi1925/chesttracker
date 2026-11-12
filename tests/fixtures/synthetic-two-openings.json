@@ -1,0 +1,1262 @@
+[
+  {
+    "at": "2026-01-01T00:00:00+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.083333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.166667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.250000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.333333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.416667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.500000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.583333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.666667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.750000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.833333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:00.916667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.083333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.166667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:01.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:02.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:03.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:04.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:05.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:06.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:07.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:08.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:09+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:09.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:09.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:09.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:09.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:09.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:09.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:09.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:09.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:09.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:09.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:09.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:10+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:10.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:10.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:10.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:10.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 1,
+    "ownPlayerScore": 0
+  },
+  {
+    "at": "2026-01-01T00:00:10.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:10.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:10.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:10.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:10.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:10.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:10.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.500000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.583333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.666667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.750000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.833333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:11.916667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.083333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.166667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.250000+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.333333+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.416667+00:00",
+    "state": "IN_MATCH",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.500000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.583333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.666667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.750000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.833333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:12.916667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.083333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.166667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.250000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.333333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.416667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.500000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.583333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.666667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.750000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.833333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:13.916667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.083333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.166667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.250000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.333333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.416667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.500000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.583333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.666667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.750000+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.833333+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  },
+  {
+    "at": "2026-01-01T00:00:14.916667+00:00",
+    "state": "LOBBY",
+    "stateConfidence": 0.99,
+    "notificationScore": 0,
+    "ownPlayerScore": 1
+  }
+]
