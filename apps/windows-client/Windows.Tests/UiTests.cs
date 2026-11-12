@@ -20,11 +20,13 @@ public sealed class UiTests
                 Assert.Equal(WindowState.Maximized,window.WindowState);
                 Assert.Equal(Visibility.Visible,((Grid)window.FindName("LoginView")).Visibility);
                 var motion=(System.Windows.Media.Animation.Storyboard)window.FindResource("BackdropMotion");motion.Begin(window,true);motion.Stop(window);
+                if(Windows.Graphics.Capture.GraphicsCaptureSession.IsSupported()){var item=CaptureInterop.ForWindow(new System.Windows.Interop.WindowInteropHelper(window).Handle);Assert.True(item.Size.Width>0&&item.Size.Height>0);}
                 var folder=Path.Combine(RepositoryRoot(),"artifacts/ui-preview");Directory.CreateDirectory(folder);Save(window,Path.Combine(folder,"login-fullscreen.png"));
                 window.ShowAccount("Janik");window.UpdateLayout();
                 Assert.Equal(WindowState.Normal,window.WindowState);Assert.Equal(420,window.Width);Assert.Equal(620,window.Height);
                 Assert.Equal("Janik",((TextBlock)window.FindName("AccountName")).Text);
                 Assert.Equal("Fortnite starten",((System.Windows.Controls.Button)window.FindName("GameButton")).Content);
+                var buttonText=FindVisual<TextBlock>((DependencyObject)window.FindName("GameButton"));Assert.NotNull(buttonText);Assert.True(((SolidColorBrush)buttonText.Foreground).Color.R<80,"Primary button text must contrast with its light background");
                 Assert.Equal(Visibility.Collapsed,((Grid)window.FindName("LoginView")).Visibility);
                 Assert.Equal(Visibility.Visible,((Grid)window.FindName("AccountView")).Visibility);
                 Assert.False(((System.Windows.Controls.CheckBox)window.FindName("EnableCapture")).IsChecked);
@@ -50,4 +52,5 @@ public sealed class UiTests
         Assert.Contains("CHEST",page.GetText().ToUpperInvariant());
     }
     private static string RepositoryRoot(){for(var directory=new DirectoryInfo(AppContext.BaseDirectory);directory is not null;directory=directory.Parent)if(File.Exists(Path.Combine(directory.FullName,"scripts/fetch-ocr-models.ps1")))return directory.FullName;throw new DirectoryNotFoundException("Repository root not found");}
+    private static T? FindVisual<T>(DependencyObject parent) where T:DependencyObject {for(int i=0;i<VisualTreeHelper.GetChildrenCount(parent);i++){var child=VisualTreeHelper.GetChild(parent,i);if(child is T item)return item;var found=FindVisual<T>(child);if(found is not null)return found;}return null;}
 }
