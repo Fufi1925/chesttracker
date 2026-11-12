@@ -1,0 +1,49 @@
+name: Publish private release
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful Build and verify run containing the Windows artifact
+        required: true
+      version:
+        description: New version tag
+        default: v1.0.0
+        required: true
+permissions:
+  contents: read
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify tested commit and download Windows build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$RUN_ID" =~ ^[0-9]+$ ]]
+          gh run view "$RUN_ID" --repo "$REPO" --json conclusion,headSha,name,event > /tmp/verified-run.json
+          node --input-type=module -e 'import fs from "node:fs";const r=JSON.parse(fs.readFileSync("/tmp/verified-run.json","utf8"));if(r.conclusion!=="success"||r.name!=="Build and verify"||r.event!=="push"||!/^[0-9a-f]{40}$/.test(r.headSha))process.exit(1);fs.appendFileSync(process.env.GITHUB_ENV,"RELEASE_COMMIT="+r.headSha+"\n");'
+          gh run download "$RUN_ID" --repo "$REPO" --name ChestTracker-win-x64 --dir artifacts/release
+          cd artifacts/release
+          sha256sum ChestTracker-win-x64.zip > SHA256SUMS.txt
+          unzip -l ChestTracker-win-x64.zip | grep ChestTracker.exe
+      - name: Publish verified package in private repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          test "$(gh repo view "$REPO" --json isPrivate --jq .isPrivate)" = true
+          gh release create "$VERSION" artifacts/release/ChestTracker-win-x64.zip artifacts/release/SHA256SUMS.txt --repo "$REPO" --target "$RELEASE_COMMIT" --title "ChestTracker $VERSION" --notes-file docs/RELEASE.md --latest
