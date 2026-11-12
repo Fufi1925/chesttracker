@@ -9,7 +9,7 @@ public static class Storage
  public static T? Load<T>(string name){var p=Path.Combine(Root,name);if(!File.Exists(p))return default;try{return JsonSerializer.Deserialize<T>(ProtectedData.Unprotect(File.ReadAllBytes(p),null,DataProtectionScope.CurrentUser));}catch(CryptographicException){return default;}}
  public static void Delete(string name){var p=Path.Combine(Root,name);if(File.Exists(p))File.Delete(p);}
 }
-public record Settings(string Server,string Username,string Hotkey);
+public record Settings(string Server,string Username,string Hotkey,bool LocalAnalysisConsent=false);
 public record Credentials(string UserId,string DisplayName,string AccessToken,string RefreshToken,DateTimeOffset ExpiresAt);
 public record PendingCommand(string Path,JsonElement Body);
 public record PendingQueue(string OwnerId,List<PendingCommand> Commands);

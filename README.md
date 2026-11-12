@@ -10,11 +10,11 @@ Private Truhenstatistik für Fufi und bis zu drei Freunde. Deutsche, responsive 
 - Windows-Overlay oben rechts, globaler Hotkey O/F8/F9, Tray, DPAPI-geschützte Sitzungen und dauerhafte Ereigniswarteschlange, idempotente Synchronisierung.
 - Konservativer Replay-Detektor mit Hysterese, lokalem Template-Abgleich und synthetischen Testfällen.
 
-**Live-Fortnite-Erkennung ist unvalidiert und deaktiviert.** Es liegen keine echten Testvideos vor. Das Programm nimmt kein Live-Spiel auf. Der Bild-Replay erwartet kalibrierte Templates und zwei unabhängige Hinweise auf eine eigene Öffnung. Es gibt keine Aussage über Anti-Cheat-Kompatibilität oder Erkennungsgenauigkeit im echten Spiel.
+**Die lokale Live-Bildanalyse ist in Windows v1.1.0 optional aktivierbar, bleibt aber unvalidiert.** Sie verwendet dokumentierte Windows-Fensteraufnahme und lokale Tesseract-OCR. Es liegen keine echten Testvideos vor; die aktuellen HUD-Hinweise können von den implementierten Mustern abweichen. Kein Versprechen zuverlässiger Erkennung, Regelverträglichkeit oder Sperrensicherheit. Ohne eindeutige Hinweise werden keine Werte erfunden.
 
 ## Windows herunterladen
 
-Im [privaten Release](https://github.com/Fufi1925/chesttracker/releases) `ChestTracker-win-x64.zip` herunterladen, entpacken und `ChestTracker.exe` starten. Windows 10/11 x64; keine separate .NET-Installation erforderlich. Die EXE ist nicht codesigniert.
+Im [Release](https://github.com/Fufi1925/chesttracker/releases) `ChestTracker-win-x64.zip` herunterladen, entpacken und `ChestTracker.exe` starten. Windows 10/11 x64; keine separate .NET-Installation erforderlich. Die EXE ist nicht codesigniert.
 
 Die API-Basisadresse entspricht der bereitgestellten Website. Mit dem vom Admin angelegten ChestTracker-Konto anmelden. **Keine Epic-Zugangsdaten verwenden.** Einzelheiten: [Windows-Anleitung](docs/WINDOWS.md).
 

@@ -1,25 +1,16 @@
-ChestTracker v1.0.1 – Konten löschen und Windows-Anmeldung.
+ChestTracker v1.1.0 – Neuer Windows-Client.
 
-Das Repository und der Download sind auf ausdrücklichen Wunsch des Eigentümers derzeit öffentlich. Die Website-Statistiken bleiben hinter dem ChestTracker-Login geschützt. Dieses Release enthält keine Zugangsdaten.
+- Dunkler Vollbild-Login mit mittiger Anmeldung und dezenter Hintergrundbewegung. Nach Login automatisch kompaktes 420 × 620-Fenster.
+- Anzeigename und echte Kontostatistiken oben. Fortnite starten/stoppen und frei wählbarer Hotkey darunter.
+- Start über den Epic-Launcher und automatische Erkennung eines bereits laufenden sichtbaren nativen Fortnite-Fensters. Stoppen beendet die Erfassung, ohne das Spiel gewaltsam zu schließen.
+- Optional aktivierbare lokale Windows-Fensteraufnahme mit Tesseract-OCR für deutsche/englische HUD-Hinweise. Keine Bilder oder OCR-Texte werden hochgeladen.
+- Konservativer Match-/Lobby-Zustandsautomat, Entprellung von Öffnungshinweisen, lokaler Puffer und idempotente Synchronisierung.
+- Vollständiges Paket mit OCR-Sprachmodellen, nativen Bibliotheken, Anleitung und Prüfsumme.
 
-- Freundeskonten unter Admin mit Bestätigung dauerhaft löschen. Zugehörige Sitzungen, Präsenz, Matches und Events werden entfernt; das Audit protokolliert die Löschung ohne Passwortdaten. Das Administratorkonto ist geschützt.
-- Windows: O wird nicht mehr als systemweit verschluckte Taste registriert. Der Buchstabe bleibt beim Tippen von Benutzernamen und Passwörtern erhalten. Im aktiven Clientfenster schaltet Tippen das Overlay nicht um; außerhalb funktioniert O weiterhin.
-- Klarere Meldung, wenn eine falsche API-Adresse oder eine vorgeschaltete HTML-Anmeldeseite statt JSON antwortet.
-- Getestet: 22 API-Tests, 16 Detektor-/Tastentests, 5 Windows-Pixel-/Login-Tests und 3 Browser-Tests. Das Release verwendet das Windows-Artefakt des erfolgreich geprüften CI-Commits.
+Prüfungen: 24 Core-/Detektor-/Hotkey-Tests, 8 Windows-Tests einschließlich WPF-Vollbild-/Kompaktansicht, nativer OCR und Login; außerdem 22 API-Tests und 3 Browserabläufe. Der Build prüft zusätzlich, dass die veröffentlichte EXE ihre mitgelieferte OCR laden kann. Das Release wird erst aus einem erfolgreichen CI-Lauf veröffentlicht.
 
-- Website und zentrale API auf Vercel, PostgreSQL auf Neon.
-- Fufi und bis zu drei Freunde; Pflicht-Passwortwechsel, Profile, Match-Verlauf, Rangliste, Live-Status und Admin-Audit.
-- Selbstenthaltender Windows-x64-Client mit kleinem Overlay, O/F8/F9-Hotkey, DPAPI-Sitzungen und dauerhafter Ereigniswarteschlange.
-- Offline-Beobachtungs- und Bild-Replay mit synthetischen Beispielen. Keine Live-Capture-Funktion.
+Wichtig: Echte Fortnite-Truhenerkennung und Regelverträglichkeit sind weiterhin unvalidiert. Es liegen keine echten Testclips vor; aktuelle HUDs können von den implementierten Textmustern abweichen. Kein Versprechen zuverlässiger Zählung oder Sperrensicherheit. Nicht für Turniere verwenden. Unklare Bilder liefern Status unbekannt statt erfundener Werte. Die EXE ist nicht codesigniert.
 
-Der Release-Workflow prüft vor der Veröffentlichung den erfolgreichen CI-Lauf und verwendet exakt dessen Commit und Windows-Artefakt.
-
-Download: `ChestTracker-win-x64.zip` vollständig entpacken und `ChestTracker.exe` starten. Keine separate .NET-Installation erforderlich. `SHA256SUMS.txt` prüft das Paket. Dieses Release enthält keine Zugangsdaten.
-
-Grenzen: Live-Erkennung, Fortnite-Regelverträglichkeit und Genauigkeit sind unvalidiert; Live-Aufnahme ist deaktiviert. GUI/Overlay/Hotkeys auf dem Ziel-PC manuell prüfen. Die EXE ist nicht codesigniert.
-
-Aktualisierung zur Einrichtung: Nach ausdrücklicher Nutzerfreigabe ist der zusätzliche Vercel-Anmeldeschutz für Produktion deaktiviert. Website und EXE verwenden direkt den verpflichtenden ChestTracker-Login. Die ältere Schutzwarnung in der mitgelieferten README ist damit erledigt; die EXE muss dafür nicht neu heruntergeladen werden. Eine Schritt-für-Schritt-Anleitung steht unter `docs/ERSTE_SCHRITTE.md` im Repository.
+ZIP vollständig entpacken, alle beigefügten Dateien zusammenlassen und ChestTracker.exe starten. Website und EXE verwenden dieselben Zugangsdaten. Der öffentliche Download wurde vom Eigentümer ausdrücklich freigegeben; Website-Statistiken bleiben hinter dem App-Login.
 
 Website: https://chesttracker-fufi1925s-projects.vercel.app
-
-Anleitung: `docs/WINDOWS.md` und `docs/INSTALLATION.md` im Repository.

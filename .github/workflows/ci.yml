@@ -32,7 +32,15 @@ jobs:
         with:
           dotnet-version: '10.0.x'
       - run: dotnet test apps/windows-client/ChestTracker.Tests/ChestTracker.Tests.csproj -c Release
+      - shell: pwsh
+        run: ./scripts/fetch-ocr-models.ps1
       - run: dotnet test apps/windows-client/Windows.Tests/ChestTracker.Windows.Tests.csproj -c Release
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: Windows-UI-preview
+          path: artifacts/ui-preview/*.png
+          if-no-files-found: ignore
       - shell: pwsh
         run: ./scripts/build-windows.ps1
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

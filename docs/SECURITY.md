@@ -7,7 +7,7 @@
 - Sessions sind widerrufbar; deaktivierte Nutzer verlieren sofort Zugang. Pflicht-Passwortwechsel wird von der API erzwungen. Refresh-Token-Wiederverwendung widerruft die Familie.
 - SQL-Parameter statt SQL-Interpolation mit Nutzereingaben. Validierung mit Zod. Ratenlimits liegen zentral in PostgreSQL. Keine fremden Match-IDs bei Client-Schreibvorgängen. Plausibilitätsgrenzen: maximal 200 Events pro Match, mindestens 500 ms Abstand, ausreichende Confidence und Ereigniszeiten innerhalb des Matches.
 - API-Fehler enthalten keine internen Datenbankmeldungen oder Secrets. Produktionsdaten werden nicht in Browser-Speichern gecacht. API-Responses sind `no-store`, private Seiten nicht für Suchmaschinen bestimmt.
-- Referenzbilder befinden sich ausschließlich im privaten Quellcode. Die Website veröffentlicht keine Fortnite-Bildausschnitte. Der Client wertet ausschließlich vom Nutzer geladene lokale Bilder aus.
+- Referenzbilder befinden sich ausschließlich im privaten Quellcode. Die Website veröffentlicht keine Fortnite-Bildausschnitte. Der Client wertet geladene Replay-Bilder oder nach bewusster Aktivierung das sichtbare native Fortnite-Fenster im Vordergrund lokal aus. Keine Spielbilder oder OCR-Texte werden hochgeladen.
 - Ein privater Client ist manipulierbar. Die Metadaten sind kein fälschungssicherer Nachweis einer echten Öffnung. Serverprüfungen reduzieren einfache Fehler, garantieren aber keine Anti-Tamper-Sicherheit.
 
 ## Vor einem späteren Live-Einsatz

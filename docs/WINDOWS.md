@@ -1,31 +1,35 @@
-# Windows-Client
+# Windows-Client v1.1.0
 
-1. `ChestTracker-win-x64.zip` aus dem privaten Release herunterladen und vollständig entpacken.
-2. `ChestTracker.exe` unter Windows 10/11 x64 starten. Selbstenthaltend; keine separate .NET-Runtime nötig. Unsigned, daher kann Windows eine Herausgeberwarnung zeigen.
-3. API-Basisadresse `https://chesttracker-fufi1925s-projects.vercel.app` prüfen, ohne `/api` oder andere Pfade. Verbindung prüfen. Der zusätzliche Vercel-Schutz ist für Produktion nach ausdrücklicher Nutzerfreigabe deaktiviert; der ChestTracker-Login bleibt erforderlich.
-4. Mit dem zentralen ChestTracker-Benutzernamen anmelden. Beim ersten Login das Startpasswort ändern. Die App speichert keine Klartextpasswörter.
-5. `replays/synthetic-two-openings.json` als Beobachtungs-Replay laden. Erwartung: Lobby → Match → genau zwei eigene Öffnungen; eine Teamkamerad-Meldung zählt nicht → Lobby ohne alte Truhenzahl.
-6. Replay ist standardmäßig lokal. Die Option „Replay ausdrücklich an den Server senden“ schreibt nach einem Bestätigungsdialog **echte Testdatensätze** in die zentrale Statistik. Nur für bewusste Testläufe verwenden; anschließend kann der Admin sie nachvollziehbar löschen.
+Voraussetzungen: Windows 10 ab Version 2004 (Build 19041) oder Windows 11, x64. Das ZIP vollständig entpacken; EXE, x64-Bibliotheken und tessdata zusammen lassen. .NET und OCR-Modelle sind enthalten.
 
-Das Overlay ist 220 × 36 logische Pixel, oben rechts innerhalb des sichtbaren Arbeitsbereichs, klickdurchlässig und ohne Fokuswechsel. O blendet nur die Anzeige aus. F8/F9 sind Alternativen bei Konflikten. Tray: Overlay, Pause, Einstellungen, Website und Beenden. Windows-Skalierung beeinflusst physische Pixel. Exklusives Vollbild kann die Anzeige verdecken; für spätere Live-Anwendung wäre randloser Fenstermodus nötig. Mehrmonitor-/DPI-Wechsel und Hotkey-Verhalten müssen auf dem Ziel-PC geprüft werden.
+1. Alte ChestTracker-Instanzen beenden. Neue ChestTracker.exe öffnen.
+2. Es erscheint der dunkle Vollbild-Login mit dezenter Bewegung. Benutzername und dasselbe Passwort wie auf der Website verwenden. Serveradresse ist unter dem Login ausklappbar.
+3. Nach erfolgreicher Anmeldung wird das Fenster automatisch 420 × 620 logische Pixel groß. Oben stehen Anzeigename und echte Kontostatistiken.
+4. Fortnite starten öffnet den Epic Games Launcher, wenn kein sichtbares natives Fortnite-Fenster läuft. Sobald ein solches Fenster vorhanden ist, wird es automatisch erkannt. Ein laufendes Spiel muss nicht erneut gestartet werden.
+5. Fortnite stoppen beendet ausschließlich ChestTracker-Erfassung und Bildaufnahme. Der Spielprozess wird nicht gewaltsam geschlossen.
+6. Mit Ändern neben dem Overlay-Hotkey eine Taste von A–Z oder F1–F12 auswählen. Escape bricht ab. Buchstaben werden beim Tippen nicht verschluckt. Im aktiven ChestTracker-Fenster schaltet normales Tippen das Overlay nicht um.
+7. Optional unter Einstellungen und Erkennung die lokale experimentelle Fensteranalyse aktivieren. Die Freigabe wird lokal gespeichert, startet aber niemals automatisch beim Öffnen der EXE: Die Erfassung beginnt erst nach Fortnite starten. Es werden nur Bilder des erkannten Fortnite-Fensters verarbeitet, nur solange dieses im Vordergrund ist. Bilddaten und erkannte Texte werden nicht hochgeladen oder als Dateien gespeichert.
 
-## Lokales Bild-Replay
+## Was die automatische Analyse tatsächlich tut
 
-Ein JSON-Manifest beschreibt Bilder und fünf präzise HUD-Regionen: Brust-/Öffnungsbenachrichtigung, unabhängiger eigener-Spieler-Hinweis, Match-, Lobby- und Ladeindikator. Templatebilder müssen aus rechtmäßig bereitgestellten eigenen Aufnahmen stammen. Alle Pfade liegen relativ innerhalb des Manifestordners. Region-Werte sind normalisierte Bruchteile des Vollbildes. Die Templates müssen die jeweilige Region eng abdecken; eine beliebige sichtbare Truhe ist kein Öffnungsnachweis.
+Windows Graphics Capture liefert die Bilder des gewählten Fenster-Handles, mit der normalen Windows-Aufnahmeanzeige. Lokale Tesseract-OCR wertet begrenzte HUD-Regionen auf Deutsch/Englisch aus. Der Zustandsautomat bestätigt Match-/Lobby-Hinweise über mehrere Bilder. Eine Truhenöffnung benötigt eine explizite Öffnungsmeldung und einen passenden positiven EP-/XP-Hinweis; eine sichtbare Truhe allein zählt nie. Mehrfachbilder werden entprellt. Metadaten/Events laufen über die idempotente API.
 
-```json
-{
-  "chest": {"template":"templates/chest.png","region":{"x":0.4,"y":0.5,"width":0.2,"height":0.05},"threshold":0.94},
-  "ownPlayer": {"template":"templates/own.png","region":{"x":0.4,"y":0.55,"width":0.2,"height":0.05},"threshold":0.94},
-  "match": {"template":"templates/match.png","region":{"x":0.8,"y":0.1,"width":0.1,"height":0.05},"threshold":0.94},
-  "lobby": {"template":"templates/lobby.png","region":{"x":0.2,"y":0.1,"width":0.1,"height":0.05},"threshold":0.94},
-  "loading": {"template":"templates/loading.png","region":{"x":0.5,"y":0.1,"width":0.1,"height":0.05},"threshold":0.94},
-  "frames":[{"image":"frames/0001.png","seconds":0},{"image":"frames/0002.png","seconds":0.083}]
-}
-```
+Ein geöffnetes Fortnite-Fenster bedeutet allein noch nicht Lobby oder Match. Fehlen eindeutige Hinweise, steht Status unbekannt. Bei Ladebildschirm, Fensterwechsel oder Alt-Tab wird kein Matchausgang erfunden. Stoppen/Schließen markiert ein laufendes Match nur als unvollständig.
 
-Das Beispiel beschreibt nur das Dateiformat; echte Fortnite-Templates sind nicht beigefügt. `replays/synthetic-images/manifest.json` ist ein ausführbarer künstlicher Pixeltest ohne Spielgrafiken. Der Detector ist bei echten Szenen **unvalidiert**. Unterschiedliche UI-Skalierung, Sprache und HUD-Version benötigen neue Kalibrierung.
+**Die Erkennung ist an echten Fortnite-Aufnahmen weiterhin unvalidiert.** Die implementierten Textmuster passen möglicherweise nicht zum aktuellen HUD, zur Sprache, UI-Skalierung oder zu realen Öffnungshinweisen. Es gibt keine nachgewiesene Live-Precision/Recall, keine Garantie, dass eigene und Team-Aktionen in jedem Fall unterscheidbar sind, und keine Zusage von Epic-Zulässigkeit oder Sperrensicherheit. Nicht bei Turnieren verwenden. Ohne eindeutige Treffer bleiben Zähler und Status konservativ.
 
-## Daten und Wiederverbindung
+## Offline-Test
 
-Konfiguration, Sitzungen, Wiederanlauf-Metadaten und Warteschlange liegen DPAPI-verschlüsselt unter `%LOCALAPPDATA%\ChestTracker`. Wiederholte Events behalten dieselbe ID. Der Client entfernt sie erst nach bestätigter Serverantwort. Ein nicht wiederholbarer Validierungsfehler stoppt die Warteschlange und wird angezeigt; er wird nicht stillschweigend verworfen. Für die Bereinigung eines beschädigten oder nicht mehr gültigen Matches den Admin hinzuziehen.
+Unter Einstellungen und Erkennung → Offline-Replay testen kann replays/synthetic-two-openings.json geladen werden. Dieses Replay läuft nur lokal und verändert keine zentrale Statistik. Bild-Replay- und Template-Komponenten sind weiterhin als Quellcode vorhanden; der Hauptablauf bleibt bewusst auf Login, Start/Stopp und Hotkey konzentriert.
+
+## Lokale Daten
+
+Sitzungen, Aufnahmefreigabe, Hotkey und die dauerhafte Warteschlange liegen mit Windows-DPAPI geschützt unter %LOCALAPPDATA%\\ChestTracker. Das neue Fenster zeigt die Anzahl noch nicht synchronisierter Ereignisse. Keine Klartextpasswörter in Konfigurationsdateien. Bei Offline-Verbindung werden Events später mit denselben IDs wiederholt.
+
+## Technische Quellen
+
+- Windows-Fensteraufnahme: https://learn.microsoft.com/en-us/windows/apps/develop/media-authoring-processing/screen-capture
+- CreateForWindow: https://learn.microsoft.com/en-us/windows/win32/api/windows.graphics.capture.interop/nf-windows-graphics-capture-interop-igraphicscaptureiteminterop-createforwindow
+- Epic zu Drittsoftware: https://www.epicgames.com/help/c-34254770/c-40491939/me-suspenderan-si-uso-software-de-terceros-en-fortnite-a15028164
+- Wettbewerbsregeln: https://www.fortnite.com/competitive/rules-guidelines/rules-library/fortnite-competitive-master-rules
+- OCR-Komponenten und Lizenzen: THIRD_PARTY.md

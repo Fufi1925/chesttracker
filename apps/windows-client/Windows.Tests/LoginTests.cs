@@ -6,6 +6,16 @@ using Xunit;
 namespace ChestTracker.Tests;
 public sealed class LoginTests
 {
+ [Fact]public async Task SimultaneousRequestsRotateRefreshOnlyOnce()
+ {
+  int refreshes=0;
+  using var api=new ApiClient(new Handler(async req=>{
+   if(req.RequestUri!.AbsolutePath=="/api/auth/login")return Json(new{user=new{id="test-user",displayName="Johan",mustChangePassword=false},accessToken="expired",refreshToken="initial-refresh",expiresIn=0});
+   if(req.RequestUri.AbsolutePath=="/api/auth/refresh"){Interlocked.Increment(ref refreshes);await Task.Delay(50);return Json(new{accessToken="renewed",refreshToken="rotated",expiresIn=900});}
+   Assert.Equal("renewed",req.Headers.Authorization!.Parameter);return Json(new{ok=true});
+  }));
+  api.Configure(Endpoint());await api.Login("Johan","test-password");await Task.WhenAll(api.Send("auth/me",get:true),api.Send("dashboard",get:true));Assert.Equal(1,refreshes);
+ }
  private static string Endpoint()=>"https://test-"+Guid.NewGuid().ToString("N")+".example/";
  private static HttpResponseMessage Json(object data,HttpStatusCode status=HttpStatusCode.OK)=>new(status){Content=new StringContent(JsonSerializer.Serialize(data),Encoding.UTF8,"application/json")};
  private sealed class Handler(Func<HttpRequestMessage,Task<HttpResponseMessage>> work):HttpMessageHandler

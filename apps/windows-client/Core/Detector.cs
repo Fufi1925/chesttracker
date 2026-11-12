@@ -8,7 +8,7 @@ public interface IChestDetector { DetectorUpdate Process(Observation frame); }
 public record DetectorUpdate(GameState State, Guid? MatchId, int Count, ChestDetection? Event, MatchChange? Match);
 
 /// <summary>Conservative state machine. A notification alone cannot count: an independent own-player cue is required.</summary>
-public sealed class ChestDetector : IChestDetector
+public sealed class ChestDetector(string detectorVersion = "template-replay-unvalidated-v1", TimeSpan? minimumInterval = null) : IChestDetector
 {
     public GameState State { get; private set; } = GameState.UNKNOWN;
     public Guid? MatchId { get; private set; }
@@ -55,10 +55,10 @@ public sealed class ChestDetector : IChestDetector
             bool positive = frame.NotificationScore >= .94 && frame.OwnPlayerScore >= .94;
             if (positive) { positiveFrames++; absentFrames = 0; }
             else { positiveFrames = 0; absentFrames++; if (absentFrames >= 3) notificationLatched = false; }
-            if (positiveFrames >= 2 && !notificationLatched && frame.At-lastEvent >= TimeSpan.FromMilliseconds(800))
+            if (positiveFrames >= 2 && !notificationLatched && frame.At-lastEvent >= (minimumInterval ?? TimeSpan.FromMilliseconds(800)))
             {
                 notificationLatched = true; lastEvent = frame.At; Count++;
-                detection = new(Guid.NewGuid(), MatchId.Value, frame.At, Math.Min(frame.NotificationScore,frame.OwnPlayerScore), "template-replay-unvalidated-v1");
+                detection = new(Guid.NewGuid(), MatchId.Value, frame.At, Math.Min(frame.NotificationScore,frame.OwnPlayerScore), detectorVersion);
             }
         }
         else positiveFrames = 0;

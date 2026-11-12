@@ -1,14 +1,17 @@
-# Vom ZIP zum angemeldeten Client
+# Schnellstart – ChestTracker v1.1.0
 
-1. Im Windows-Downloadordner mit der rechten Maustaste auf `ChestTracker-win-x64.zip` klicken und **Alle extrahieren** wählen. Danach den entpackten Ordner öffnen. Die EXE aus diesem Ordner starten, nicht direkt aus der ZIP-Vorschau.
-2. Die [Website](https://chesttracker-fufi1925s-projects.vercel.app) öffnen. Benutzername **Fufi**, Passwort: das selbst gesetzte ChestTracker-Passwort. Ein bereits ersetztes Startpasswort funktioniert nicht mehr. Für Freunde erstellt Fufi eigene Konten unter **Admin → Spieler hinzufügen**.
-3. Vor dem Update eine laufende alte EXE vollständig über das Tray-Menü **Beenden** schließen. `ChestTracker.exe` aus dem neu entpackten Paket v1.0.1 starten. Bei **API-Adresse** muss `https://chesttracker-fufi1925s-projects.vercel.app` stehen.
-4. **Verbindung prüfen** anklicken. Danach Benutzername **Fufi** und dasselbe Passwort wie auf der Website eintragen und **Anmelden** anklicken. Website und EXE verwenden dasselbe Konto.
-5. Zum lokalen Funktionstest **Beobachtungs-Replay** anklicken und im entpackten Ordner `replays/synthetic-two-openings.json` öffnen. Das Overlay zeigt Lobby, dann zwei Öffnungen im Match und anschließend wieder Lobby. **O** blendet es aus oder ein. Dafür ist kein laufendes Fortnite nötig.
-6. Nur wenn dieser Test bewusst auch auf der Website erscheinen soll: vor dem Replay **Replay ausdrücklich an den Server senden (Testdaten)** aktivieren und die Rückfrage bestätigen. Dadurch entstehen echte Testeinträge in der Statistik. Fufi kann sie später unter **Matches → Match öffnen → Match löschen** entfernen; die Löschung wird protokolliert.
+1. Alte ChestTracker.exe vollständig beenden.
+2. ChestTracker-win-x64.zip herunterladen und mit Alle extrahieren entpacken.
+3. ChestTracker.exe im entpackten Ordner starten. Die Dateien im Ordner x64 und die Sprachmodelle in tessdata gehören dazu.
+4. Im mittigen Vollbild-Login mit dem Benutzernamen und demselben Passwort wie auf der Website anmelden. Die API-Adresse ist voreingestellt: https://chesttracker-fufi1925s-projects.vercel.app
+5. Nach der Anmeldung wird das Fenster klein. Oben stehen dein Name und deine Statistik.
+6. Fortnite starten drücken. Das Spiel wird über den Epic-Launcher geöffnet oder als bereits laufendes Fenster erkannt.
+7. Fortnite stoppen beendet die Erfassung; das Spiel wird nicht gewaltsam geschlossen.
+8. Unter Overlay-Hotkey → Ändern deine Taste auswählen.
 
-Der zusätzliche Vercel-Anmeldeschutz wurde nach Freigabe des Nutzers für Produktion deaktiviert. Der ChestTracker-Login bleibt verpflichtend; Vorschau-Deployments behalten Vercel-Schutz.
+Die experimentelle lokale Bildanalyse ist separat unter Einstellungen und Erkennung aktivierbar. Bilder bleiben auf deinem PC. Die automatische Truhen-/Match-Erkennung ist programmiert, aber ohne echte Testclips nicht als zuverlässig validiert. Ein geöffnetes Fenster allein erzeugt keine erfundenen Truhen oder Matchzustände.
 
-**Konto löschen:** Als Fufi auf der Website **Admin** öffnen, beim gewünschten Freundeskonto auf das Papierkorb-Symbol klicken und **Konto endgültig löschen** bestätigen. Dabei werden auch die Matches und Truhenereignisse dieses Kontos entfernt. Fufi selbst lässt sich nicht löschen.
+Die Website: https://chesttracker-fufi1925s-projects.vercel.app
+Freunde erhalten eigene Konten von Fufi. Freundeskonten lassen sich unter Admin mit Papierkorb und Bestätigung löschen; dabei werden deren Matches und Ereignisse entfernt.
 
-**Die EXE zählt derzeit keine echten Fortnite-Truhen automatisch.** Live-Aufnahme und echte Spielerkennung sind nicht implementiert/freigegeben. Funktionsfähig sind die Anmeldung, das private Dashboard und der Offline-Replay-Test. Für eine reale Erkennung fehlen geprüfte Spielaufnahmen und die Validierung der Bildhinweise. Ein bloßes Aktivieren einer Einstellung kann diese fehlende Funktion nicht ersetzen.
+Der Download ist nach ausdrücklicher Freigabe des Eigentümers öffentlich. Statistikdaten erfordern weiterhin den ChestTracker-Login.
