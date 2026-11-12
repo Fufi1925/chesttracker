@@ -1,5 +1,7 @@
 ChestTracker v1.0.1 – Konten löschen und Windows-Anmeldung.
 
+Das Repository und der Download sind auf ausdrücklichen Wunsch des Eigentümers derzeit öffentlich. Die Website-Statistiken bleiben hinter dem ChestTracker-Login geschützt. Dieses Release enthält keine Zugangsdaten.
+
 - Freundeskonten unter Admin mit Bestätigung dauerhaft löschen. Zugehörige Sitzungen, Präsenz, Matches und Events werden entfernt; das Audit protokolliert die Löschung ohne Passwortdaten. Das Administratorkonto ist geschützt.
 - Windows: O wird nicht mehr als systemweit verschluckte Taste registriert. Der Buchstabe bleibt beim Tippen von Benutzernamen und Passwörtern erhalten. Im aktiven Clientfenster schaltet Tippen das Overlay nicht um; außerhalb funktioniert O weiterhin.
 - Klarere Meldung, wenn eine falsche API-Adresse oder eine vorgeschaltete HTML-Anmeldeseite statt JSON antwortet.

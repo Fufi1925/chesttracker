@@ -1,4 +1,4 @@
-name: Publish private release
+name: Publish release
 on:
   workflow_dispatch:
     inputs:
@@ -9,6 +9,11 @@ on:
         description: New version tag
         default: v1.0.0
         required: true
+      allow_public_release:
+        description: Explicitly allow a public repository release for this run
+        type: boolean
+        default: false
+        required: false
 permissions:
   contents: read
 jobs:
@@ -36,14 +41,18 @@ jobs:
           cd artifacts/release
           sha256sum ChestTracker-win-x64.zip > SHA256SUMS.txt
           unzip -l ChestTracker-win-x64.zip | grep ChestTracker.exe
-      - name: Publish verified package in private repository
+      - name: Publish verified package
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           VERSION: ${{ inputs.version }}
+          ALLOW_PUBLIC_RELEASE: ${{ inputs.allow_public_release }}
         shell: bash
         run: |
           set -euo pipefail
           [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
-          test "$(gh repo view "$REPO" --json isPrivate --jq .isPrivate)" = true
+          if [ "$(gh repo view "$REPO" --json isPrivate --jq .isPrivate)" != true ] && [ "$ALLOW_PUBLIC_RELEASE" != true ]; then
+            echo 'A public release requires explicit authorization for this workflow run.'
+            exit 1
+          fi
           gh release create "$VERSION" artifacts/release/ChestTracker-win-x64.zip artifacts/release/SHA256SUMS.txt --repo "$REPO" --target "$RELEASE_COMMIT" --title "ChestTracker $VERSION" --notes-file docs/RELEASE.md --latest
