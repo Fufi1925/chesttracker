@@ -1662,3 +1662,6 @@ kbd {
     min-width: 0;
   }
 }
+.table-wrap {
+  position: relative;
+}
