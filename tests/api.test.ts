@@ -165,6 +165,11 @@ test("admin creates a friend with unique initial password", async () => {
 });
 test("friend cannot write admin statistics or users", async () => {
   assert.equal(
+    (await request("admin/users/" + friendId, "DELETE", {}, friendCookie))
+      .status,
+    403,
+  );
+  assert.equal(
     (
       await request(
         "admin/users",
@@ -438,6 +443,62 @@ test("disabled users lose access immediately, admin cannot disable itself", asyn
   assert.equal(
     (await request("dashboard", "GET", undefined, friendCookie)).status,
     401,
+  );
+});
+test("administrator cannot delete the admin account", async () => {
+  const {
+    rows: [admin],
+  } = await db().query("SELECT id FROM users WHERE username='Fufi'");
+  assert.equal(
+    (await request("admin/users/" + admin.id, "DELETE", {})).status,
+    400,
+  );
+  assert.equal(
+    (await db().query("SELECT id FROM users WHERE id=$1", [admin.id])).rows
+      .length,
+    1,
+  );
+});
+test("deleting a friend removes sessions, presence and statistics with sanitized audit", async () => {
+  assert.equal(
+    (await request("admin/users/" + friendId, "DELETE", {})).status,
+    200,
+  );
+  for (const table of [
+    "users",
+    "sessions",
+    "presence",
+    "matches",
+    "chest_events",
+  ]) {
+    const column = table === "users" ? "id" : "user_id";
+    assert.equal(
+      (
+        await db().query(`SELECT * FROM ${table} WHERE ${column}=$1`, [
+          friendId,
+        ])
+      ).rows.length,
+      0,
+      table,
+    );
+  }
+  assert.equal(
+    (await request("auth/me", "GET", undefined, friendCookie)).status,
+    401,
+  );
+  const {
+    rows: [log],
+  } = await db().query(
+    "SELECT before_json FROM audit_log WHERE action='DELETE' AND target_type='USER' AND target_id=$1",
+    [friendId],
+  );
+  assert.equal(log.before_json.user.username, "Luca");
+  assert.equal(log.before_json.deletedMatches, 1);
+  assert.equal(log.before_json.deletedEvents, 1);
+  assert.ok(!JSON.stringify(log).includes("password_hash"));
+  assert.equal(
+    (await request("admin/users/" + friendId, "DELETE", {})).status,
+    404,
   );
 });
 test("expired session is rejected, logout revokes", async () => {

@@ -19,6 +19,7 @@ Basis: dieselbe Origin wie die Website, Präfix `/api`. JSON, Zeitpunkte ISO 860
 | POST client/matches/end | `{id,endedAt,status:"COMPLETED" oder "INCOMPLETE"}` |
 | GET/POST admin/users | Liste / `{username,displayName}`; initialPassword einmalig nur für Admin |
 | PATCH admin/users/:id | `{displayName?,enabled?,resetPassword?}` |
+| DELETE admin/users/:id | Freundeskonto mit Sitzungen, Präsenz, Matches und Events löschen; Admin geschützt; Audit ohne Passwortdaten |
 | GET admin/audit | letzte 200 Änderungen mit Vorher/Nachher, ohne Passwort-Hashes |
 | POST admin/matches | `{id,userId,startedAt,endedAt,status}` |
 | PATCH/DELETE admin/matches/:id | Zeiten/Status ändern oder Match samt Events entfernen |

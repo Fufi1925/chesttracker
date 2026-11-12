@@ -31,6 +31,31 @@ test("private login, dashboard, admin and logout", async ({ page }) => {
   ).toBeVisible();
   await page.getByRole("button", { name: "Sicher übernommen" }).click();
   await expect(page.getByText("Testfreund", { exact: true })).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBeTruthy();
+  await page
+    .getByRole("button", { name: "Konto von BrowserFriend löschen" })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "BrowserFriend endgültig löschen?" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Abbrechen", exact: true }).click();
+  await expect(page.getByText("Testfreund", { exact: true })).toBeVisible();
+  await page
+    .getByRole("button", { name: "Konto von BrowserFriend löschen" })
+    .click();
+  await page
+    .getByRole("button", { name: "Konto endgültig löschen", exact: true })
+    .click();
+  await expect(
+    page.getByText("Konto gelöscht.", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("Testfreund", { exact: true })).toHaveCount(0);
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "Abmelden" }).click();
   await expect(
     page.getByRole("button", { name: "Anmelden", exact: true }),

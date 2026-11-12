@@ -2,9 +2,9 @@
 
 ## Automatisch
 
-- 20 API-/Datenbanktests: idempotenter Bootstrap und Argon2id, private Daten, Erstlogin, Passwortwechsel, Origin/CSRF, Freundeskonto, serverseitige Admin-Rollen, Vier-Konten-Limit, gemeinsame Desktop-Identität, Match-Start, Ereignis-Deduplikation, ungültige Payloads/Zeiten, Präsenz/Timeout, Abschluss und Durchschnitt aus echten Daten, Fremdmatchschutz, Admin-Korrektur und Audit, Refresh-Replay, Deaktivierung, Ablauf/Logout und persistente Login-Limits.
-- 13 plattformunabhängige Detektortests: vorbeigelaufen, eigener Öffnungshinweis, Dauermeldung, Teamkamerad, schnell getrennte Meldungen, unsichtbarer Hinweis, Lobby-Debounce, Ladeunterbrechung, Matchwechsel, Offline, unsicherer Zustand, wiederholter Frame, unvollständiges Ende.
-- Windows-Pixeltests: exaktes Template, umgekehrtes Muster als Negativfall, ungültige ROI. Diese Tests laufen ausschließlich auf Windows.
+- 22 API-/Datenbanktests: idempotenter Bootstrap und Argon2id, private Daten, Erstlogin, Passwortwechsel, Origin/CSRF, Freundeskonto, serverseitige Admin-Rollen, Vier-Konten-Limit, gemeinsame Desktop-Identität, Match-Start, Ereignis-Deduplikation, ungültige Payloads/Zeiten, Präsenz/Timeout, Abschluss und Durchschnitt aus echten Daten, Fremdmatchschutz, Admin-Korrektur und Audit, Refresh-Replay, Deaktivierung, Ablauf/Logout und persistente Login-Limits. Zusätzlich Kontolöschung mit allen abhängigen Daten, sofortigem Sitzungsverlust und Schutz des Administrators.
+- 16 plattformunabhängige Detektor-/Tastentests: vorbeigelaufen, eigener Öffnungshinweis, Dauermeldung, Teamkamerad, schnell getrennte Meldungen, unsichtbarer Hinweis, Lobby-Debounce, Ladeunterbrechung, Matchwechsel, Offline, unsicherer Zustand, wiederholter Frame, unvollständiges Ende. Zusätzlich Tasteneingaben im Loginfenster, gehaltene Tasten und Fokuswechsel.
+- Fünf Windows-Pixel-/Login-Tests: exaktes Template mit Negativfall, ungültige ROI, unverändertes O/o im Desktop-Login, verständliche HTML-Fehler und unveränderte Serverfehlermeldungen. Diese Tests laufen ausschließlich auf Windows.
 - Drei Browser-Tests gegen eine isolierte PostgreSQL-kompatible PGlite-Datenbank: Login/Dashboard/Admin/Logout, Mobilnavigation ohne Dokumentüberlauf, anonyme API-Sperre. Keine Produktionssecrets und keine produktiven Demokonten.
 
 ## Manuell am Windows-Zielsystem

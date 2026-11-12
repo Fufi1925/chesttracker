@@ -1,4 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
- <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms><EnableWindowsTargeting>true</EnableWindowsTargeting><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><AssemblyName>ChestTracker</AssemblyName><Version>1.0.0</Version></PropertyGroup>
+ <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms><EnableWindowsTargeting>true</EnableWindowsTargeting><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><AssemblyName>ChestTracker</AssemblyName><Version>1.0.1</Version></PropertyGroup>
  <ItemGroup><Compile Remove="Core/**/*.cs;ChestTracker.Tests/**/*.cs;Windows.Tests/**/*.cs"/><ProjectReference Include="Core/ChestTracker.Core.csproj"/><PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.0"/></ItemGroup>
 </Project>

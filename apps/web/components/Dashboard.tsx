@@ -1111,19 +1111,29 @@ export default function Dashboard() {
                       <span>Zurücksetzen</span>
                     </button>
                     {u.role !== "ADMIN" && (
-                      <button
-                        onClick={() =>
-                          void perform(async () => {
-                            await api("admin/users/" + u.id, "PATCH", {
-                              enabled: !u.enabled,
-                            });
-                            await loadAdmin();
-                            await load();
-                          })
-                        }
-                      >
-                        {u.enabled ? "Deaktivieren" : "Aktivieren"}
-                      </button>
+                      <>
+                        <button
+                          onClick={() =>
+                            void perform(async () => {
+                              await api("admin/users/" + u.id, "PATCH", {
+                                enabled: !u.enabled,
+                              });
+                              await loadAdmin();
+                              await load();
+                            })
+                          }
+                        >
+                          {u.enabled ? "Deaktivieren" : "Aktivieren"}
+                        </button>
+                        <button
+                          className="danger"
+                          aria-label={"Konto von " + u.username + " löschen"}
+                          title="Konto löschen"
+                          onClick={() => setModal("deleteUser:" + u.id)}
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </>
                     )}
                   </div>
                 ))}
@@ -1405,6 +1415,39 @@ export default function Dashboard() {
                     Speichern
                   </button>
                 </form>
+              </>
+            ) : modal.startsWith("deleteUser:") ? (
+              <>
+                <h2>
+                  {adminUsers.find((u) => u.id === modal.slice(11))?.username}{" "}
+                  endgültig löschen?
+                </h2>
+                <p>
+                  Das Konto, seine Sitzungen, Matches und Truhenereignisse
+                  werden dauerhaft gelöscht. Die Aktion bleibt im
+                  Änderungsprotokoll nachvollziehbar.
+                </p>
+                <div className="button-row">
+                  <button onClick={() => setModal(null)}>Abbrechen</button>
+                  <button
+                    className="primary danger-solid"
+                    disabled={working}
+                    onClick={() =>
+                      void perform(async () => {
+                        const id = modal.slice(11);
+                        await api("admin/users/" + id, "DELETE", {});
+                        setModal(null);
+                        if (profile === id) setProfile(session.id);
+                        setNotice("Konto gelöscht.");
+                        await loadAdmin();
+                        await load();
+                      })
+                    }
+                  >
+                    Konto endgültig löschen
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </>
             ) : modal === "deleteMatch" || modal.startsWith("deleteEvent:") ? (
               <>

@@ -11,23 +11,27 @@ using Forms=System.Windows.Forms;
 namespace ChestTracker;
 public partial class MainWindow : Window
 {
- [DllImport("user32.dll")]static extern bool RegisterHotKey(IntPtr h,int id,uint modifiers,uint key);
- [DllImport("user32.dll")]static extern bool UnregisterHotKey(IntPtr h,int id);
+ [DllImport("user32.dll")]static extern short GetAsyncKeyState(int key);
  private readonly OverlayWindow overlay=new();private readonly ApiClient api=new();private ChestDetector detector=new();
  private readonly DispatcherTimer timer=new(){Interval=TimeSpan.FromSeconds(5)};private readonly Forms.NotifyIcon tray=new();
- private bool busy,paused,running,online;private IntPtr handle;private string name="ChestTracker";private CancellationTokenSource? replayCancel;
+ private readonly DispatcherTimer hotkeyTimer=new(){Interval=TimeSpan.FromMilliseconds(40)};
+ private readonly OverlayToggle overlayToggle=new();
+ private int overlayKey=0x4F;
+ private bool busy,paused,running,online;private string name="ChestTracker";private CancellationTokenSource? replayCancel;
  public MainWindow()
  {
   InitializeComponent();var settings=Storage.Load<Settings>("settings.dat");if(settings is not null){ServerUrl.Text=settings.Server;Username.Text=settings.Username;Hotkey.SelectedIndex=settings.Hotkey=="F8"?1:settings.Hotkey=="F9"?2:0;}
-  SourceInitialized+=(_,_)=>{handle=new WindowInteropHelper(this).Handle;HwndSource.FromHwnd(handle).AddHook(WndProc);SetHotkey();};
+  hotkeyTimer.Tick+=(_,_)=>{if(overlayToggle.Update((GetAsyncKeyState(overlayKey)&0x8000)!=0,IsActive))Toggle();};
+  hotkeyTimer.Start();SetHotkey();
   Loaded+=async(_,_)=>{overlay.Show();try{api.Configure(ServerUrl.Text);if(api.Credentials is not null){name=api.Credentials.DisplayName;var user=await api.Send("auth/me",get:true);if(user.GetProperty("user").GetProperty("mustChangePassword").GetBoolean())ChangePanel.Visibility=Visibility.Visible;else api.RecoverIncompleteMatch();online=true;ConnectionText.Text=$"Angemeldet als {name}";}}catch(Exception e){ConnectionText.Text=e.Message;}Update();};
   timer.Tick+=async(_,_)=>await Sync();timer.Start();
   tray.Icon=System.Drawing.SystemIcons.Application;tray.Text="ChestTracker";tray.Visible=true;
   var menu=new Forms.ContextMenuStrip();menu.Items.Add("Overlay anzeigen / ausblenden",null,(_,_)=>Dispatcher.Invoke(Toggle));menu.Items.Add("Erkennung pausieren / fortsetzen",null,(_,_)=>Dispatcher.Invoke(()=>paused=!paused));menu.Items.Add("Einstellungen",null,(_,_)=>Dispatcher.Invoke(()=>{Show();Activate();}));menu.Items.Add("Website öffnen",null,(_,_)=>Dispatcher.Invoke(OpenWebsite));menu.Items.Add("Beenden",null,(_,_)=>Dispatcher.Invoke(Close));tray.ContextMenuStrip=menu;
-  Closing+=(_,_)=>{replayCancel?.Cancel();timer.Stop();UnregisterHotKey(handle,1);overlay.Close();tray.Dispose();api.Dispose();};
+  Closing+=(_,_)=>{replayCancel?.Cancel();timer.Stop();hotkeyTimer.Stop();overlay.Close();tray.Dispose();api.Dispose();};
  }
- private IntPtr WndProc(IntPtr hwnd,int msg,IntPtr w,IntPtr l,ref bool handled){if(msg==0x0312&&w.ToInt32()==1){Toggle();handled=true;}return IntPtr.Zero;}
- private void SetHotkey(){if(handle==IntPtr.Zero)return;UnregisterHotKey(handle,1);var key=Hotkey.SelectedIndex==1?0x77u:Hotkey.SelectedIndex==2?0x78u:0x4Fu;if(!RegisterHotKey(handle,1,0x4000,key))ConnectionText.Text="Hotkey bereits belegt. Bitte O, F8 oder F9 auswählen.";}
+ // Poll only the configured key's down bit. Do not register or consume O: a global bare-letter
+ // RegisterHotKey would remove that character from username/password fields in every application.
+ private void SetHotkey(){overlayKey=Hotkey.SelectedIndex==1?0x77:Hotkey.SelectedIndex==2?0x78:0x4F;overlayToggle.Reset();}
  private void Hotkey_Changed(object sender,SelectionChangedEventArgs e){if(IsLoaded)SetHotkey();}
  private void Toggle(){if(overlay.IsVisible)overlay.Hide();else overlay.Show();}
  private void Toggle_Click(object sender,RoutedEventArgs e)=>Toggle();
@@ -37,7 +41,7 @@ public partial class MainWindow : Window
  private void Save_Click(object sender,RoutedEventArgs e){try{api.Configure(ServerUrl.Text);SaveSettings();ConnectionText.Text="Einstellungen sicher gespeichert.";}catch(Exception ex){ConnectionText.Text=ex.Message;}}
  private void SaveSettings()=>Storage.Save("settings.dat",new Settings(ServerUrl.Text,Username.Text,Hotkey.SelectedIndex==1?"F8":Hotkey.SelectedIndex==2?"F9":"O"));
  private async void Check_Click(object sender,RoutedEventArgs e){try{api.Configure(ServerUrl.Text);await api.Send("health",auth:false,get:true);ConnectionText.Text="Server erreichbar.";}catch(Exception ex){ConnectionText.Text=ex.Message;}}
- private async void Login_Click(object sender,RoutedEventArgs e){LoginButton.IsEnabled=false;try{api.Configure(ServerUrl.Text);var user=await api.Login(Username.Text,Password.Password);name=user.GetProperty("displayName").GetString()!;ChangePanel.Visibility=user.GetProperty("mustChangePassword").GetBoolean()?Visibility.Visible:Visibility.Collapsed;if(ChangePanel.Visibility==Visibility.Collapsed)Password.Clear();online=true;ConnectionText.Text=$"Angemeldet als {name}";SaveSettings();}catch(Exception ex){ConnectionText.Text=ex.Message;}finally{LoginButton.IsEnabled=true;Update();}}
+ private async void Login_Click(object sender,RoutedEventArgs e){LoginButton.IsEnabled=false;try{api.Configure(ServerUrl.Text);var user=await api.Login(Username.Text.Trim(),Password.Password);name=user.GetProperty("displayName").GetString()!;ChangePanel.Visibility=user.GetProperty("mustChangePassword").GetBoolean()?Visibility.Visible:Visibility.Collapsed;if(ChangePanel.Visibility==Visibility.Collapsed)Password.Clear();online=true;ConnectionText.Text=$"Angemeldet als {name}";SaveSettings();}catch(Exception ex){ConnectionText.Text=ex.Message;}finally{LoginButton.IsEnabled=true;Update();}}
  private async void Change_Click(object sender,RoutedEventArgs e){try{await api.Send("auth/password",new{currentPassword=Password.Password,newPassword=NewPassword.Password});Password.Clear();NewPassword.Clear();ChangePanel.Visibility=Visibility.Collapsed;ConnectionText.Text="Passwort geändert.";}catch(Exception ex){ConnectionText.Text=ex.Message;}}
  private async void Logout_Click(object sender,RoutedEventArgs e){replayCancel?.Cancel();try{await api.Logout();}catch(Exception ex){ConnectionText.Text=ex.Message;}online=false;name="ChestTracker";Password.Clear();Update();}
  private async Task Sync()

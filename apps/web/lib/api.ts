@@ -104,7 +104,7 @@ export async function handle(req: Request): Promise<Response> {
     }
     if (path === "health") {
       await db().query("SELECT version FROM schema_migrations LIMIT 1");
-      return json({ status: "ok", version: "1.0.0" });
+      return json({ status: "ok", version: "1.0.1" });
     }
     if (path === "auth/login" && method === "POST") {
       const input = z
@@ -420,6 +420,45 @@ export async function handle(req: Request): Promise<Response> {
         return json({ id, initialPassword: initial }, 201);
       }
       const userPath = path.match(/^admin\/users\/([\w-]+)$/);
+      if (userPath && method === "DELETE") {
+        const id = uuid.parse(userPath[1]);
+        await transaction(async (tx) => {
+          await tx.query("LOCK TABLE users IN EXCLUSIVE MODE");
+          const {
+            rows: [target],
+          } = await tx.query("SELECT * FROM users WHERE id=$1 FOR UPDATE", [
+            id,
+          ]);
+          if (!target) fail(404, "Konto nicht gefunden.");
+          if (target.role === "ADMIN" || target.id === user.id)
+            fail(400, "Das Administratorkonto kann nicht gelöscht werden.");
+          const {
+            rows: [counts],
+          } = await tx.query(
+            "SELECT (SELECT COUNT(*)::int FROM matches WHERE user_id=$1) AS matches, (SELECT COUNT(*)::int FROM chest_events WHERE user_id=$1) AS events",
+            [id],
+          );
+          await tx.query("DELETE FROM presence WHERE user_id=$1", [id]);
+          await tx.query("DELETE FROM sessions WHERE user_id=$1", [id]);
+          await tx.query("DELETE FROM chest_events WHERE user_id=$1", [id]);
+          await tx.query("DELETE FROM matches WHERE user_id=$1", [id]);
+          await tx.query("DELETE FROM users WHERE id=$1", [id]);
+          await audit(
+            tx,
+            user,
+            "DELETE",
+            "USER",
+            id,
+            {
+              user: publicUser(target),
+              deletedMatches: counts.matches,
+              deletedEvents: counts.events,
+            },
+            null,
+          );
+        });
+        return json({ ok: true });
+      }
       if (userPath && method === "PATCH") {
         const id = uuid.parse(userPath[1]);
         const input = z

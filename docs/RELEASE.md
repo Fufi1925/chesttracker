@@ -1,11 +1,16 @@
-Private Erstveröffentlichung von ChestTracker.
+ChestTracker v1.0.1 – Konten löschen und Windows-Anmeldung.
+
+- Freundeskonten unter Admin mit Bestätigung dauerhaft löschen. Zugehörige Sitzungen, Präsenz, Matches und Events werden entfernt; das Audit protokolliert die Löschung ohne Passwortdaten. Das Administratorkonto ist geschützt.
+- Windows: O wird nicht mehr als systemweit verschluckte Taste registriert. Der Buchstabe bleibt beim Tippen von Benutzernamen und Passwörtern erhalten. Im aktiven Clientfenster schaltet Tippen das Overlay nicht um; außerhalb funktioniert O weiterhin.
+- Klarere Meldung, wenn eine falsche API-Adresse oder eine vorgeschaltete HTML-Anmeldeseite statt JSON antwortet.
+- Getestet: 22 API-Tests, 16 Detektor-/Tastentests, 5 Windows-Pixel-/Login-Tests und 3 Browser-Tests. Das Release verwendet das Windows-Artefakt des erfolgreich geprüften CI-Commits.
 
 - Website und zentrale API auf Vercel, PostgreSQL auf Neon.
 - Fufi und bis zu drei Freunde; Pflicht-Passwortwechsel, Profile, Match-Verlauf, Rangliste, Live-Status und Admin-Audit.
 - Selbstenthaltender Windows-x64-Client mit kleinem Overlay, O/F8/F9-Hotkey, DPAPI-Sitzungen und dauerhafter Ereigniswarteschlange.
 - Offline-Beobachtungs- und Bild-Replay mit synthetischen Beispielen. Keine Live-Capture-Funktion.
 
-Geprüft: 20 API-Tests, 13 Detektortests, 2 Windows-Pixeltests und 3 Browser-Tests; Windows-Build und Web-Produktionsbuild erfolgreich. Der Release-Workflow prüft vor der Veröffentlichung den erfolgreichen CI-Lauf und verwendet exakt dessen Commit und Windows-Artefakt.
+Der Release-Workflow prüft vor der Veröffentlichung den erfolgreichen CI-Lauf und verwendet exakt dessen Commit und Windows-Artefakt.
 
 Download: `ChestTracker-win-x64.zip` vollständig entpacken und `ChestTracker.exe` starten. Keine separate .NET-Installation erforderlich. `SHA256SUMS.txt` prüft das Paket. Dieses Release enthält keine Zugangsdaten.
 

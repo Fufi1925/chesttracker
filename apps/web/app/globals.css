@@ -1032,6 +1032,7 @@ td small {
 }
 .admin-user {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   padding: 20px 23px;
