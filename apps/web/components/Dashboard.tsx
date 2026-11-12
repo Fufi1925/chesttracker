@@ -1280,14 +1280,16 @@ export default function Dashboard() {
                   </li>
                   <li>Mit deinem ChestTracker-Konto anmelden.</li>
                   <li>
-                    Offline-Replay wählen. Mit <kbd>O</kbd> das Overlay ein- und
-                    ausblenden.
+                    Nach der Anmeldung erscheint das kompakte Fenster mit
+                    deiner Statistik. „Fortnite starten“ beginnt die Erfassung;
+                    den Overlay-Hotkey kannst du darunter ändern.
                   </li>
                 </ol>
                 <div className="info-box">
-                  Live-Erkennung ist unvalidiert und bleibt deaktiviert. Für
-                  einen echten Einsatz fehlen geprüfte Spielaufnahmen und eine
-                  Kompatibilitätsprüfung.
+                  Die lokale Fensteranalyse lässt sich in der Windows-App
+                  unter Einstellungen aktivieren. Sie ist experimentell und
+                  noch nicht an echten Fortnite-Aufnahmen validiert. Ohne
+                  eindeutige Hinweise bleibt der Spielstatus unbekannt.
                 </div>
                 <a
                   className="primary"
