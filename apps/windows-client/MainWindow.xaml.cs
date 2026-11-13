@@ -62,6 +62,32 @@ public partial class MainWindow : Window
         hotkey = e.Key; choosingKey = false; toggle.Reset(); HotkeyButton.Content = $"{hotkey}  ·  Ändern"; SaveSettings();
     }
     private void Hotkey_Click(object sender, RoutedEventArgs e) { choosingKey = true; HotkeyButton.Content = "Taste drücken …"; }
+    private void Password_Changed(object sender, RoutedEventArgs e)
+    {
+        if (VisiblePassword is not null && VisiblePassword.Visibility == Visibility.Visible && VisiblePassword.Text != Password.Password)
+            VisiblePassword.Text = Password.Password;
+    }
+    private void VisiblePassword_Changed(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        if (VisiblePassword.Visibility == Visibility.Visible && Password.Password != VisiblePassword.Text)
+            Password.Password = VisiblePassword.Text;
+    }
+    private void RevealPassword_Click(object sender, RoutedEventArgs e)
+    {
+        if (VisiblePassword.Visibility != Visibility.Visible)
+        {
+            VisiblePassword.Text = Password.Password; VisiblePassword.Visibility = Visibility.Visible; Password.Visibility = Visibility.Collapsed;
+            EyeSlash.Visibility = Visibility.Visible; VisiblePassword.Focus(); VisiblePassword.CaretIndex = VisiblePassword.Text.Length;
+            System.Windows.Automation.AutomationProperties.SetName(RevealPassword, "Passwort verbergen"); RevealPassword.ToolTip = "Passwort verbergen";
+        }
+        else HideLoginPassword();
+    }
+    private void HideLoginPassword()
+    {
+        VisiblePassword.Visibility = Visibility.Collapsed; VisiblePassword.Clear(); Password.Visibility = Visibility.Visible; EyeSlash.Visibility = Visibility.Collapsed;
+        System.Windows.Automation.AutomationProperties.SetName(RevealPassword, "Passwort anzeigen"); RevealPassword.ToolTip = "Passwort anzeigen";
+    }
+    private void ClearLoginPassword() { HideLoginPassword(); Password.Clear(); }
     private void SaveSettings() => Storage.Save("settings.dat", new Settings(ServerUrl.Text.Trim(), Username.Text.Trim(), hotkey.ToString(), EnableCapture.IsChecked == true));
     private async void Login_Click(object sender, RoutedEventArgs e)
     {
@@ -79,7 +105,7 @@ public partial class MainWindow : Window
     }
     private async Task FinishLogin()
     {
-        authenticated = true; online = true; initialPassword = ""; Password.Clear(); ChangePanel.Visibility = Visibility.Collapsed; SaveSettings();
+        authenticated = true; online = true; initialPassword = ""; ClearLoginPassword(); ChangePanel.Visibility = Visibility.Collapsed; SaveSettings();
         ShowAccount(displayName); api.RecoverIncompleteMatch();
         try { await RefreshStats(); } catch (Exception error) { ConnectionText.Text = UserError(error); }
         await Synchronize();
@@ -99,7 +125,7 @@ public partial class MainWindow : Window
         catch (Exception error) { ChangeError.Text = UserError(error); }
         finally { ChangeButton.IsEnabled = true; }
     }
-    private async void CancelChange_Click(object sender, RoutedEventArgs e) { try { await api.Logout(); } catch { } initialPassword = ""; Password.Clear(); ChangePanel.Visibility = Visibility.Collapsed; }
+    private async void CancelChange_Click(object sender, RoutedEventArgs e) { try { await api.Logout(); } catch { } initialPassword = ""; ClearLoginPassword(); ChangePanel.Visibility = Visibility.Collapsed; }
     private async void Check_Click(object sender, RoutedEventArgs e) { try { api.Configure(ServerUrl.Text); await api.Send("health", auth: false, get: true); LoginStatus.Text = "Server erreichbar."; } catch (Exception error) { LoginStatus.Text = UserError(error); } }
     private async Task RefreshStats()
     {
@@ -178,7 +204,7 @@ public partial class MainWindow : Window
         overlay.Update(displayName, detector.State, detector.Count, online, false, capture is not null, hint);
     }
     private void ToggleOverlay() { if (!monitoring) return; overlayWanted = !overlayWanted; if (!overlayWanted) overlay.Hide(); else if (game is not null) { overlay.Show(); UpdateOverlay(); } }
-    private async void Logout_Click(object sender, RoutedEventArgs e) { await StopMonitoring(); try { await api.Logout(); } catch { } authenticated = false; online = false; overlay.SetPeers([]); Password.Clear(); AccountView.Visibility = Visibility.Collapsed; LoginView.Visibility = Visibility.Visible; LoginButton.IsDefault = true; WindowState = WindowState.Maximized; LoginStatus.Text = ""; if (SystemParameters.ClientAreaAnimation) animation?.Begin(this, true); }
+    private async void Logout_Click(object sender, RoutedEventArgs e) { await StopMonitoring(); try { await api.Logout(); } catch { } authenticated = false; online = false; overlay.SetPeers([]); ClearLoginPassword(); AccountView.Visibility = Visibility.Collapsed; LoginView.Visibility = Visibility.Visible; LoginButton.IsDefault = true; WindowState = WindowState.Maximized; LoginStatus.Text = ""; if (SystemParameters.ClientAreaAnimation) animation?.Begin(this, true); }
     private void Website_Click(object sender, RoutedEventArgs e) { try { Process.Start(new ProcessStartInfo(api.Server) { UseShellExecute = true }); } catch (Exception error) { ConnectionText.Text = UserError(error); } }
     private async void Replay_Click(object sender, RoutedEventArgs e)
     {

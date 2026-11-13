@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using Tesseract;
 using Xunit;
 using ChestTracker.Core;
+using TextBox = System.Windows.Controls.TextBox;
 namespace ChestTracker.Tests;
 public sealed class UiTests
 {
@@ -20,6 +21,11 @@ public sealed class UiTests
                 var window=new MainWindow(true);window.Show();window.UpdateLayout();
                 Assert.Equal(WindowState.Maximized,window.WindowState);
                 Assert.Equal(Visibility.Visible,((Grid)window.FindName("LoginView")).Visibility);
+                var password=(PasswordBox)window.FindName("Password");var revealed=(TextBox)window.FindName("VisiblePassword");var eye=(System.Windows.Controls.Button)window.FindName("RevealPassword");
+                password.Password="new-Oo-password-2026";eye.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+                Assert.Equal(password.Password,revealed.Text);Assert.Equal(Visibility.Visible,revealed.Visibility);
+                revealed.Text="edited-Oo-password-2026";eye.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+                Assert.Equal("edited-Oo-password-2026",password.Password);Assert.Equal(Visibility.Collapsed,revealed.Visibility);Assert.Empty(revealed.Text);password.Clear();
                 var motion=(System.Windows.Media.Animation.Storyboard)window.FindResource("BackdropMotion");motion.Begin(window,true);motion.Stop(window);
                 if(Windows.Graphics.Capture.GraphicsCaptureSession.IsSupported()){var item=CaptureInterop.ForWindow(new System.Windows.Interop.WindowInteropHelper(window).Handle);Assert.True(item.Size.Width>0&&item.Size.Height>0);}
                 var folder=Path.Combine(RepositoryRoot(),"artifacts/ui-preview");Directory.CreateDirectory(folder);Save(window,Path.Combine(folder,"login-fullscreen.png"));
@@ -31,6 +37,8 @@ public sealed class UiTests
                 Assert.Equal(Visibility.Collapsed,((Grid)window.FindName("LoginView")).Visibility);
                 Assert.Equal(Visibility.Visible,((Grid)window.FindName("AccountView")).Visibility);
                 Assert.False(((System.Windows.Controls.CheckBox)window.FindName("EnableCapture")).IsChecked);
+                Assert.True(((AmbientBackdrop)window.FindName("AccountBackdrop")).Coins);
+                Assert.True(((ScrollViewer)window.FindName("AccountScroll")).ScrollableHeight<1,"Default account controls must fit the compact window.");
                 var background=(SolidColorBrush)window.Background;Assert.True(background.Color.R<30&&background.Color.G<30&&background.Color.B<30);
                 Save(window,Path.Combine(folder,"account-compact.png"));
                 var overlay=new OverlayWindow();overlay.Update("Janik",GameState.IN_MATCH,5,true,false,true);
