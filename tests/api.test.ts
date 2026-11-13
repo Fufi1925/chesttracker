@@ -370,6 +370,22 @@ test("presence is blue in match, unknown stays unknown, timeout becomes offline"
   d = (await request("dashboard")).body;
   assert.equal(d.users.find((u: any) => u.id === friendId).state, "OFFLINE");
 });
+test("desktop presence distinguishes an open Fortnite window from an unknown HUD and expires safely", async () => {
+  await request("client/heartbeat", "POST", { state: "UNKNOWN", matchId, fortniteRunning: true }, "Bearer " + access);
+  let entry = (await request("dashboard")).body.users.find((u: any) => u.id === friendId);
+  assert.equal(entry.state, "UNKNOWN"); assert.equal(entry.fortnite_running, true);
+  assert.equal(entry.current_chests, 1);
+  await request("client/heartbeat", "POST", { state: "UNKNOWN", fortniteRunning: false }, "Bearer " + access);
+  entry = (await request("dashboard")).body.users.find((u: any) => u.id === friendId);
+  assert.equal(entry.fortnite_running, false);
+  await request("client/heartbeat", "POST", { state: "LOBBY" }, "Bearer " + access);
+  entry = (await request("dashboard")).body.users.find((u: any) => u.id === friendId);
+  assert.equal(entry.fortnite_running, true); // Compatible with already released clients.
+  await db().query("UPDATE presence SET last_heartbeat_at=now()-interval '30 seconds' WHERE user_id=$1", [friendId]);
+  entry = (await request("dashboard")).body.users.find((u: any) => u.id === friendId);
+  assert.equal(entry.state, "OFFLINE"); assert.equal(entry.fortnite_running, false);
+  assert.equal((await request("client/heartbeat", "POST", { state: "UNKNOWN", fortniteRunning: "yes" }, "Bearer " + access)).status, 400);
+});
 test("complete match, average and graph derive from stored events", async () => {
   assert.equal(
     (

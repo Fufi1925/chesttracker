@@ -10,7 +10,7 @@ public sealed class GameplayTests
     private DetectorUpdate Frame(bool harvest = false, double sound = .95, int loot = 0, int fresh = 0, double label = 0, bool xp = false, HudText? text = null)
     {
         at = at.AddMilliseconds(167);
-        return detector.Process(analyzer.Analyze(at, new(true, sound, harvest, loot, fresh, label, xp), text ?? new()).Observation);
+        return detector.Process(analyzer.Analyze(at, new(true, sound, harvest, loot, fresh, label, xp, GoldChestLabelScore: label, GoldXpScore: xp ? .9 : 0), text ?? new()).Observation);
     }
     private void Start() { for (int i = 0; i < 5; i++) Frame(); }
     private void Harvest() { for (int i = 0; i < 8; i++) Frame(harvest: true); }
@@ -33,9 +33,13 @@ public sealed class GameplayTests
     [Fact] public void OwnChestXpLabelCountsWithoutSearchedWording() { Start(); Frame(text: new(Notification: "+600 EP TRUHE")); for (int i = 0; i < 30; i++) Frame(); Assert.Equal(1, detector.Count); }
     [Fact] public void OtherXpMessagesDoNotCount() { Start(); for (int i = 0; i < 30; i++) Frame(text: new(Notification: "+900 EP NEUE STURMPHASE")); Assert.Equal(0, detector.Count); }
     [Fact] public void VisualXpLabelNeedsItsOwnXpLine() { Start(); for (int i = 0; i < 30; i++) Frame(label: .99); Assert.Equal(0, detector.Count); }
+    [Fact] public void WeakPurpleScenePatternDoesNotCount()
+    {
+        Start(); for (int i = 0; i < 30; i++) Frame(label: .65, xp: true); Assert.Equal(0, detector.Count);
+    }
     [Fact] public void OneConfirmedVisualLabelSurvivesShortDisplayAndDoesNotDuplicate()
     {
-        Start(); Frame(label: .9, xp: true); for (int i = 0; i < 15; i++) Frame();
+        Start(); Frame(label: .9, xp: true); Frame(label: .9, xp: true); for (int i = 0; i < 15; i++) Frame();
         Assert.Equal(1, detector.Count);
     }
     [Fact] public void ResultScreenCompletesMatchAndSpectatorHudCannotStartAnother()
@@ -53,4 +57,64 @@ public sealed class GameplayTests
         var result = pixels.Analyze(at, new byte[960 * 540 * 4]);
         Assert.False(result.GameplayHud); Assert.False(result.OwnXpLabel); Assert.Equal(0, result.ChestSoundScore);
     }
+    [Fact] public void PersistentOwnXpBannerDoesNotCountAgainAfterCooldown()
+    {
+        Start(); for (int i = 0; i < 80; i++) Frame(label: .9, xp: true); Assert.Equal(1, detector.Count);
+    }
+    [Fact] public void GoldenLabelNeedsAnIndependentXpSignature()
+    {
+        var d = new GameplayAnalyzer();
+        for (int i = 0; i < 12; i++)
+        {
+            var r = d.Analyze(at.AddMilliseconds(i * 167), new(true, .95, false, 0, 0, 0, false, true, .95, .2), new());
+            Assert.Null(r.ChestReason);
+        }
+    }
+    [Fact] public void SingleChestPatternFlashDoesNotBecomeAnOpening()
+    {
+        Start(); Frame(label: .95, xp: true); for (int i = 0; i < 20; i++) Frame(); Assert.Equal(0, detector.Count);
+    }
+    [Fact] public void GoldenChestLabelPlusXpSignatureProducesOpeningEvidence()
+    {
+        var d = new GameplayAnalyzer();
+        var first = d.Analyze(at, new(true, .95, false, 0, 0, 0, false, true, .95, .9), new());
+        Assert.Null(first.ChestReason);
+        var r = d.Analyze(at.AddMilliseconds(167), new(true, .95, false, 0, 0, 0, false, true, .95, .9), new());
+        Assert.NotNull(r.ChestReason); Assert.True(r.Observation.OwnPlayerScore >= .94);
+    }
+
+    [Fact] public void OwnContainerLootMessageConfirmsHarvestWithoutRarityColorGuess()
+    {
+        Start(); Harvest(); Frame(text: new(Container: "+19 BEHÄLTER GEÖFFNET")); Frame(); Assert.Equal(1, detector.Count);
+    }
+    [Fact] public void StrongOwnContainerFeedbackCanConfirmAShortHarvest()
+    {
+        Start(); Frame(harvest: true); Frame(harvest: true); Frame(text: new(Container: "+19 BEHÄLTER GEÖFFNET")); Frame(); Assert.Equal(1, detector.Count);
+    }
+    [Fact] public void RemoteContainerFeedbackWithoutOwnHarvestDoesNotCount()
+    {
+        Start(); for (int i = 0; i < 15; i++) Frame(text: new(Container: "+19 BEHÄLTER GEÖFFNET")); Assert.Equal(0, detector.Count);
+    }
+    [Fact] public void ExistingContainerBannerCannotTurnLaterEffectsIntoAnotherOpening()
+    {
+        Start(); Frame(text: new(Container: "+19 BEHÄLTER GEÖFFNET"));
+        for (int i = 0; i < 10; i++) Frame(harvest: true, text: new(Container: "+19 BEHÄLTER GEÖFFNET"));
+        for (int i = 0; i < 15; i++) Frame(loot: 1100, fresh: 400, text: new(Container: "+19 BEHÄLTER GEÖFFNET"));
+        Assert.Equal(0, detector.Count);
+    }
+    [Fact] public void UnrelatedPetXpDoesNotConfirmAContainer()
+    {
+        Assert.False(ContainerCue.Read("+50 GEGNER ELIMINIERT").Opened);
+        Assert.True(ContainerCue.Read("+14 BEHBLTER GEOFFRET").Opened);
+        Assert.True(ContainerCue.Read("+19 BEHALTER\nGEOFFNET").Opened);
+    }
+
+    [Fact] public void AContainerBadgeForAnAlreadyCountedNormalOpeningDoesNotCountAgain()
+    {
+        Start(); Frame(text: new(Notification: "+600 EP TRUHE"));
+        for (int i = 0; i < 25; i++) Frame(harvest: true, text: new(Notification: "+600 EP TRUHE", Container: "+19 BEHÄLTER GEÖFFNET"));
+        for (int i = 0; i < 10; i++) Frame(text: new(Container: "+19 BEHÄLTER GEÖFFNET"));
+        Assert.Equal(1, detector.Count);
+    }
+
 }

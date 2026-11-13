@@ -20,22 +20,24 @@ public static class HudOcrInputs
         yield return Crop(bgra, "lobby", 0, .35, .30, .58);
         var play = PlayButton(bgra); if (play is not null) yield return play;
         yield return Crop(bgra, "notification", .58, .23, .28, .30, purple: true);
+        yield return Crop(bgra, "container", .74, .40, .18, .12, white: true);
+        yield return Crop(bgra, "container", .72, .40, .28, .12, white: true, softWhite: true);
         yield return Crop(bgra, "loading", .12, 0, .76, .32);
         yield return Crop(bgra, "loading", .1, .72, .8, .28);
     }
-    private static HudOcrInput Crop(byte[] pixels, string name, double x, double y, double w, double h, bool purple = false) =>
-        Crop(pixels, name, (int)(x * 960), (int)(y * 540), (int)(w * 960), (int)(h * 540), purple ? 4 : 3, purple);
-    private static HudOcrInput Crop(byte[] pixels, string name, int x, int y, int w, int h, int scale, bool purple = false, bool dark = false)
+    private static HudOcrInput Crop(byte[] pixels, string name, double x, double y, double w, double h, bool purple = false, bool white = false, bool softWhite = false) =>
+        Crop(pixels, name, (int)(x * 960), (int)(y * 540), (int)(w * 960), (int)(h * 540), purple || white ? 4 : 3, purple, white: white, softWhite: softWhite);
+    private static HudOcrInput Crop(byte[] pixels, string name, int x, int y, int w, int h, int scale, bool purple = false, bool dark = false, bool white = false, bool softWhite = false)
     {
         var gray = new byte[w * scale * h * scale];
         for (int yy = 0; yy < h; yy++) for (int xx = 0; xx < w; xx++)
         {
             int j = ((y + yy) * 960 + x + xx) * 4; int b = pixels[j], g = pixels[j + 1], r = pixels[j + 2];
-            byte v = purple ? (byte)(r > 155 && b > 175 && g > 110 && b > g * 1.06 && b > r * .97 ? 0 : 255) :
+            byte v = white ? (byte)(Math.Min(r, Math.Min(g, b)) > (softWhite ? 150 : 170) && Math.Max(r, Math.Max(g, b)) - Math.Min(r, Math.Min(g, b)) < (softWhite ? 100 : 70) ? 0 : 255) : purple ? (byte)(r > 155 && b > 175 && g > 110 && b > g * 1.06 && b > r * .97 ? 0 : 255) :
                 dark ? (byte)(r + g + b < 270 ? 0 : 255) : (byte)((r * 77 + g * 150 + b * 29) / 256);
             for (int sy = 0; sy < scale; sy++) for (int sx = 0; sx < scale; sx++) gray[(yy * scale + sy) * w * scale + xx * scale + sx] = v;
         }
-        return new(name, w * scale, h * scale, gray, purple || dark);
+        return new(name, w * scale, h * scale, gray, purple || dark || white);
     }
     private static HudOcrInput? PlayButton(byte[] pixels)
     {
@@ -62,6 +64,6 @@ public static class HudOcrInputs
     {
         var groups = inputs.GroupBy(i => i.Name).ToDictionary(g => g.Key, g => string.Join(' ', g.Select(i => i.Text)));
         string Read(string name) => groups.GetValueOrDefault(name, "");
-        return new(Read("gameplay"), Read("lobby"), Read("notification"), Read("loading"));
+        return new(Read("gameplay"), Read("lobby"), Read("notification"), Read("loading"), Read("container"));
     }
 }

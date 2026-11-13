@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Tesseract;
 using Xunit;
+using ChestTracker.Core;
 namespace ChestTracker.Tests;
 public sealed class UiTests
 {
@@ -31,7 +32,15 @@ public sealed class UiTests
                 Assert.Equal(Visibility.Visible,((Grid)window.FindName("AccountView")).Visibility);
                 Assert.False(((System.Windows.Controls.CheckBox)window.FindName("EnableCapture")).IsChecked);
                 var background=(SolidColorBrush)window.Background;Assert.True(background.Color.R<30&&background.Color.G<30&&background.Color.B<30);
-                Save(window,Path.Combine(folder,"account-compact.png"));window.Close();app.Shutdown();
+                Save(window,Path.Combine(folder,"account-compact.png"));
+                var overlay=new OverlayWindow();overlay.Update("Janik",GameState.IN_MATCH,5,true,false,true);
+                overlay.SetPeers(new[]{new OverlayPeer("lio","Lio",GameState.IN_MATCH,3),new OverlayPeer("johan","Johan",GameState.LOBBY,0)});
+                overlay.Show();overlay.UpdateLayout();
+                Assert.Equal(2,((ItemsControl)overlay.FindName("PeerRows")).Items.Count);
+                Assert.StartsWith("Janik",((TextBlock)overlay.FindName("Label")).Text);
+                Assert.True(overlay.ActualHeight>60);Save(overlay,Path.Combine(folder,"overlay-multiple-users.png"));
+                overlay.SetPeers([]);overlay.UpdateLayout();Assert.Empty(((ItemsControl)overlay.FindName("PeerRows")).Items);
+                overlay.Close();window.Close();app.Shutdown();
             }catch(Exception error){failure=error;}
         });
         thread.IsBackground=true;thread.SetApartmentState(ApartmentState.STA);thread.Start();Assert.True(thread.Join(TimeSpan.FromSeconds(45)),"WPF UI thread timed out");if(failure is not null)ExceptionDispatchInfo.Capture(failure).Throw();

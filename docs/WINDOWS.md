@@ -1,4 +1,4 @@
-# Windows-Client v1.2.0
+# Windows-Client v1.3.0
 
 Voraussetzungen: Windows 10 ab Version 2004 (Build 19041) oder Windows 11, x64. Das ZIP vollständig entpacken; EXE, x64-Bibliotheken und tessdata zusammen lassen. .NET und OCR-Modelle sind enthalten.
 
@@ -12,9 +12,11 @@ Voraussetzungen: Windows 10 ab Version 2004 (Build 19041) oder Windows 11, x64. 
 
 ## Was die automatische Analyse tatsächlich tut
 
-Windows Graphics Capture liefert die Bilder des gewählten Fortnite-Fensters. Die Bildauswertung sucht den Match-HUD sowie eigene Truhen-EP-Meldungen. Beim Abbau werden Ziel-Lebensleiste, visuelles Truhen-Sound-Symbol und neu erscheinender Loot zeitlich kombiniert. Vorbeilaufen, ein Sound-Symbol oder vorhandener Loot allein sollen keine Truhe zählen. OCR für Lobby, Ergebnis und Texte läuft daneben im Hintergrund; Ereignisse werden entprellt und über die bestehende idempotente API synchronisiert.
+Windows Graphics Capture liefert die Bilder des gewählten Fortnite-Fensters. Die Bildauswertung sucht den Match-HUD sowie eigene Truhen-EP-Meldungen. Goldene und violette Truhenmeldungen werden mit separatem Pluszeichen und EP-Zeile über mehrere Bilder geprüft. Beim Abbau werden ausgewählte Spitzhacke, Ziel-Lebensleiste, visuelles Truhen-Sound-Symbol und neue eigene Behälter-Meldung beziehungsweise frischer Loot zeitlich kombiniert. Lootgebende Holzkisten zählen ebenfalls; Ressourcen ohne Item-Loot zählen nicht. Vorbeilaufen, ein Sound-Symbol oder vorhandener Loot allein sollen keine Truhe zählen. OCR für Lobby, Ergebnis und Texte läuft daneben im Hintergrund; Ereignisse werden entprellt und über die bestehende idempotente API synchronisiert.
 
-Im Referenzclip werden fünf markierte Aktionen ohne zusätzliche Zählung sowie Ergebnis und Lobby erkannt. Das ist keine allgemeine Trefferquote. Details und bekannte Grenzen, insbesondere bei direkter Zerstörung und anderen HUD-Skalierungen: [DETECTION_REFERENCE.md](DETECTION_REFERENCE.md).
+Im Referenzclip werden fünf markierte Aktionen ohne zusätzliche Zählung sowie Ergebnis und Lobby erkannt. Das ist keine allgemeine Trefferquote. Details und bekannte Grenzen, bei verdeckten Meldungen, schnellen Aktionen und anderen HUD-Skalierungen: [DETECTION_REFERENCE.md](DETECTION_REFERENCE.md).
+
+Unter deiner eigenen Zeile zeigt das Overlay bis zu fünf weitere aktive Konten mit geöffnetem Fortnite, einschließlich Name, Spielzustand und Truhenzähler im Match. Beide PCs sollten v1.3.0 verwenden, angemeldet sein und Fortnite geöffnet haben. Aktualisierung etwa alle fünf Sekunden; ohne Heartbeat verschwindet ein Spieler nach rund 20 Sekunden. Fortnite offen ist unabhängig von der Bildanalyse; ohne Freigabe bleibt der Matchzustand unbekannt.
 
 Das Overlay zeigt im Match Truhen, in der Lobby Lobby und nach dem Ergebnis die Rundensumme. **Bildanalyse aus**: Freigabe einschalten. **Analyse pausiert**: Fortnite in den Vordergrund holen. **Keine Spielbilder**: Fortnite im Fenster-Vollbild testen und Hinweise im Accountfenster beachten. **HUD unbekannt**: Bilder kommen an, aber der Spielzustand ist noch nicht eindeutig. Verbunden bedeutet allein, dass der Server erreichbar ist.
 

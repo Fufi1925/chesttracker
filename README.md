@@ -10,7 +10,7 @@ Private Truhenstatistik für Fufi und bis zu fünf Freunde. Deutsche, responsive
 - Windows-Overlay oben rechts, globaler Hotkey O/F8/F9, Tray, DPAPI-geschützte Sitzungen und dauerhafte Ereigniswarteschlange, idempotente Synchronisierung.
 - Konservativer Replay-Detektor mit Hysterese, lokalem Template-Abgleich und synthetischen Testfällen.
 
-**Windows v1.2.0 korrigiert die HUD-Erkennung und ergänzt zeitliche Abbau-/Loot-Hinweise.** Im bereitgestellten Referenzclip werden alle fünf markierten Truhenaktionen ohne zusätzliche Ereignisse erkannt, anschließend Matchende und Lobby. Dies ist eine Kalibrierungsaufnahme, keine allgemeine Genauigkeitsgarantie. Die lokale Bildanalyse muss im Accountfenster aktiviert werden; Fenstererkennung und Serververbindung allein reichen nicht. [Referenz, Messungen und Grenzen](docs/DETECTION_REFERENCE.md).
+**Windows v1.3.0 zeigt andere angemeldete Spieler mit geöffnetem Fortnite unter deiner eigenen Overlay-Zeile.** Die lokale Erkennung wurde mit einer zweiten Aufnahme für goldene/violette EP-Meldungen und lootgebende Holzkisten erweitert. 95 % allgemeine Genauigkeit sind noch nicht nachgewiesen. Die Bildanalyse muss im Accountfenster aktiviert werden. [Referenz, Messungen und Grenzen](docs/DETECTION_REFERENCE.md).
 
 ## Windows herunterladen
 

@@ -217,6 +217,7 @@ export async function handle(req: Request): Promise<Response> {
       const { rows: users } = await db()
         .query(`SELECT u.id,u.username,u.display_name,u.role,u.created_at,
       CASE WHEN p.last_heartbeat_at>now()-interval '20 seconds' THEN p.state ELSE 'OFFLINE' END AS state,
+      CASE WHEN p.last_heartbeat_at>now()-interval '20 seconds' THEN p.fortnite_running ELSE false END AS fortnite_running,
       p.match_id,(SELECT COUNT(*)::int FROM chest_events e WHERE e.match_id=p.match_id) AS current_chests,
       (SELECT COUNT(*)::int FROM chest_events e WHERE e.user_id=u.id) AS total_chests,
       (SELECT COUNT(*)::int FROM matches m WHERE m.user_id=u.id AND m.status='COMPLETED') AS completed_matches,
@@ -272,6 +273,7 @@ export async function handle(req: Request): Promise<Response> {
               "MATCH_END_PENDING",
             ]),
             matchId: uuid.nullable().default(null),
+            fortniteRunning: z.boolean().optional(),
           })
           .parse(await body(req));
         if (input.state === "IN_MATCH" && !input.matchId)
@@ -284,8 +286,8 @@ export async function handle(req: Request): Promise<Response> {
           if (!rows.length) fail(400, "Kein aktives eigenes Match.");
         }
         await db().query(
-          "INSERT INTO presence(user_id,state,match_id) VALUES($1,$2,$3) ON CONFLICT(user_id) DO UPDATE SET state=$2,match_id=$3,last_heartbeat_at=now()",
-          [user.id, input.state, input.matchId],
+          "INSERT INTO presence(user_id,state,match_id,fortnite_running) VALUES($1,$2,$3,$4) ON CONFLICT(user_id) DO UPDATE SET state=$2,match_id=$3,fortnite_running=$4,last_heartbeat_at=now()",
+          [user.id, input.state, input.matchId, input.state !== "OFFLINE" && (input.fortniteRunning ?? !["UNKNOWN", "OFFLINE"].includes(input.state))],
         );
         return json({ ok: true });
       }

@@ -1,4 +1,4 @@
-# Schnellstart – ChestTracker v1.2.0
+# Schnellstart – ChestTracker v1.3.0
 
 1. Alte ChestTracker.exe vollständig beenden.
 2. ChestTracker-win-x64.zip herunterladen und mit Alle extrahieren entpacken.
@@ -15,3 +15,5 @@ Die Website: https://chesttracker-fufi1925s-projects.vercel.app
 Freunde erhalten eigene Konten von Fufi. Freundeskonten lassen sich unter Admin mit Papierkorb und Bestätigung löschen; dabei werden deren Matches und Ereignisse entfernt.
 
 Der Download ist nach ausdrücklicher Freigabe des Eigentümers öffentlich. Statistikdaten erfordern weiterhin den ChestTracker-Login.
+
+Mitspieler im Overlay: Alle verwenden die neue EXE, melden sich mit ihrem eigenen Konto an und öffnen Fortnite. Dein Name bleibt oben, weitere Online-Spieler stehen darunter. Der Hotkey blendet das ganze Overlay ein oder aus.

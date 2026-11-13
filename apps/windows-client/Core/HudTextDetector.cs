@@ -4,12 +4,12 @@ namespace ChestTracker.Core;
 public static partial class HudTextDetector
 {
     private static string Normalize(string value) => string.Join(' ', value.Normalize(NormalizationForm.FormKC).ToUpperInvariant().Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
-    public static Observation Analyze(DateTimeOffset at, string gameplayHud, string lobbyHud, string notificationHud, string loadingHud, bool gameplayVisual = false)
+    public static Observation Analyze(DateTimeOffset at, string gameplayHud, string lobbyHud, string notificationHud, string loadingHud, bool gameplayVisual = false, bool mapVisual = false)
     {
         var game=Normalize(gameplayHud);var lobby=Normalize(lobbyHud+" "+loadingHud);var message=Normalize(notificationHud);var loading=Normalize(loadingHud);
         bool lobbyCue=PlayWord().IsMatch(lobby)&&(ReadyWord().IsMatch(lobby)||BattleRoyale().IsMatch(lobby));
-        bool matchCue=gameplayVisual || ((game.Contains("STURM")||game.Contains("STORM"))&&Clock().IsMatch(game));
-        bool ended=loading.Contains("DEINE PLATZIERUNG")||loading.Contains("YOU PLACED")||loading.Contains("ELIMINIERT VON")||loading.Contains("ELIMINATED BY");
+        bool matchCue=gameplayVisual || ((mapVisual||game.Contains("STURM")||game.Contains("STORM"))&&Clock().IsMatch(game));
+        bool ended=loading.Contains("DEINE PLATZIERUNG")||loading.Contains("YOU PLACED")||loading.Contains("ELIMINIERT VON")||loading.Contains("ELIMINATED BY")||loading.Contains("EPISCHER SIEG")||loading.Contains("VICTORY ROYALE");
         var state=ended?GameState.MATCH_END_PENDING:lobbyCue&&!matchCue?GameState.LOBBY:matchCue&&!lobbyCue?GameState.IN_MATCH:
             loading.Contains("VERBINDE")||loading.Contains("CONNECTING")||loading.Contains("LADEVORGANG")||loading.Contains("VERBINDUNG HER")?GameState.LOADING:GameState.UNKNOWN;
         bool opening=message.Contains("TRUHE DURCHSUCHT")||message.Contains("TRUHEN DURCHSUCHT")||message.Contains("CHEST SEARCHED")||message.Contains("SEARCHED CHEST")||(ChestWord().IsMatch(message)&&OwnXp().IsMatch(message));

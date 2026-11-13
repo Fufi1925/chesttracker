@@ -2,11 +2,11 @@
 
 ## Implementiert
 
-Website/API, PostgreSQL-Migration und Bootstrap, private Konten/Statistiken, Rollenprüfung, Desktop-Sitzungen, Präsenz-Polling, Profile/Rangliste/Diagramme, Admin-Änderungen mit Audit und JSON-Export. WPF-Client mit Overlay, globalem Hotkey/Tray, DPAPI, dauerhafter Warteschlange, Offline-Replay und lokalem Bild-Template-Adapter. Linux-Crossbuild erzeugt eine echte selbstenthaltende Windows-EXE. CI führt zusätzlich Windows-Build und Windows-Pixeltests aus.
+Website/API, PostgreSQL-Migration und Bootstrap, private Konten/Statistiken, Rollenprüfung, Desktop-Sitzungen, Präsenz-Polling mit separatem Fortnite-Fensterstatus, Mitspieler unter eigener Overlay-Zeile, Profile/Rangliste/Diagramme, Admin-Änderungen mit Audit und JSON-Export. WPF-Client mit Overlay, globalem Hotkey/Tray, DPAPI, dauerhafter Warteschlange, Offline-Replay und lokalem Bild-Template-Adapter. Linux-Crossbuild erzeugt eine echte selbstenthaltende Windows-EXE. CI führt zusätzlich Windows-Build und Windows-Pixeltests aus.
 
 ## Unvalidiert / bewusst gesperrt
 
-V1.2.0 erkennt fünf markierte Truhenaktionen, Ergebnis und Lobby im bereitgestellten Kalibrierungsclip. Allgemeine Genauigkeit, andere HUDs/Situationen, Ressourcenbedarf am Ziel-PC und Regel-/Anti-Cheat-Kompatibilität bleiben unvalidiert. Siehe [Referenzbericht](DETECTION_REFERENCE.md). Keine geografischen Routen. Vollbild-/Kompakt-GUI und OCR-Laden werden in Windows-CI geprüft; tatsächliche Aufnahme, Hotkeys und Overlay im Spiel erfordern weiterhin einen manuellen Test am Ziel-PC. Die EXE ist nicht signiert.
+V1.3.0 erkennt fünf markierte Truhenaktionen, Ergebnis und Lobby im ersten Kalibrierungsclip. Eine zweite Aufnahme erweitert die Kalibrierung um goldene Meldungen und lootgebende Holzkisten; dort verbleiben verpasste Fälle. Das Ziel von 95 % ist nicht belegt. Allgemeine Genauigkeit, andere HUDs/Situationen, Ressourcenbedarf am Ziel-PC und Regel-/Anti-Cheat-Kompatibilität bleiben unvalidiert. Siehe [Referenzbericht](DETECTION_REFERENCE.md). Keine geografischen Routen. Vollbild-/Kompakt-GUI und OCR-Laden werden in Windows-CI geprüft; tatsächliche Aufnahme, Hotkeys und Overlay im Spiel erfordern weiterhin einen manuellen Test am Ziel-PC. Die EXE ist nicht signiert.
 
 ## Infrastruktur
 

@@ -1,13 +1,13 @@
-# Erkennung v1.2.0
+# Erkennung v1.3.0
 
 Die frühere OCR-Regel verlangte STURM und eine Uhrzeit sowie TRUHE DURCHSUCHT. Aktuelle HUDs zeigen teilweise nur die Uhr mit Symbolen und eine kurze EP-Meldung TRUHE. Fenster- und Servererkennung allein belegen deshalb keine laufende Spielanalyse.
 
 ## Implementierung
 
-- Match-HUD: normalisierte Bildmerkmale für Lebensleiste, Minimap und Inventar. OCR läuft unabhängig im Hintergrund und blockiert die schnellere Bildauswertung nicht.
-- Normale Öffnung: eigene Truhen-EP-Meldung, als lokaler Text oder als kleines HUD-Schriftmuster mit separater violetter EP-Zeile. Das bloße Wort Truhe, sichtbarer Loot oder ein Sound-Symbol genügt nicht.
-- Abbau: Ziel-Lebensleiste, zeitnahes goldenes Truhen-Sound-Symbol, Verschwinden des Abbauziels und neu auftauchende Loot-Farben über mehrere Bilder. Der Bereich für fallenden Loot ist konservativ auf den oberen/rechten Spielbereich begrenzt; kurze Spitzhacken-Blitze werden verworfen. Vorhandene Farben werden mit dem vorherigen Bild abgeglichen. Eine Truhe oder deren tragender Boden kann diesen Ablauf auslösen.
-- Ergebnisbildschirm beendet das Match. Zuschauer-HUD startet danach kein neues Match ohne vorherige Lobby beziehungsweise Ladephase.
+- Match-HUD: normalisierte Bildmerkmale für Lebensleiste, Minimap und Inventar; Minimap plus gelesene Uhrzeit können bei verdeckter Lebensleiste ausreichen. OCR läuft unabhängig im Hintergrund und blockiert die schnellere Bildauswertung nicht.
+- Normale Öffnung: eigene Truhen-EP-Meldung, als lokaler Text oder als kleines HUD-Schriftmuster mit separaten Plus-/EP-Schriftmustern in goldenen und violetten Meldungen, über mehrere Bilder bestätigt. Das bloße Wort Truhe, sichtbarer Loot oder ein Sound-Symbol genügt nicht.
+- Abbau: Ausgewählte Spitzhacke, Ziel-Lebensleiste und zeitnahes goldenes Truhen-Sound-Symbol plus neue eigene Behälter-Lootmeldung. Alternativ werden Verschwinden des Abbauziels und neu auftauchende Loot-Farben über mehrere Bilder geprüft. Bleibende Meldungen werden gesperrt; bereits gezählte normale Öffnungen verbrauchen die zugehörigen Abbauhinweise. Der Bereich für fallenden Loot ist konservativ auf den oberen/rechten Spielbereich begrenzt; kurze Spitzhacken-Blitze werden verworfen. Vorhandene Farben werden mit dem vorherigen Bild abgeglichen. Eine Truhe, deren tragender Boden und nach Nutzerwunsch auch lootgebende Holzkisten können diesen Ablauf auslösen. Bloße Ressourcen und vorhandener Loot zählen nicht. Die zusätzliche Behälter-Meldung ist optional und vom sichtbaren HUD abhängig.
+- Ergebnisbildschirm einschließlich Epischer Sieg beendet das Match. Zuschauer-HUD startet danach kein neues Match ohne vorherige Lobby beziehungsweise Ladephase.
 - Lobby: eigener Spielen-/Bereit-Hinweis plus Battle-Royale-Panel; gelbe Spielen-Schaltfläche wird separat vorverarbeitet. OCR-Zwischenzeichen zwischen BATTLE und ROYALE werden berücksichtigt.
 - Aufnahmefreigabe und aktuelle Analysehinweise sind direkt im Accountfenster sichtbar. Overlay unterscheidet ausgeschaltete Analyse, Hintergrundpause, fehlende Bilder und unklaren HUD.
 
@@ -17,7 +17,9 @@ Ein privater Kalibrierungsclip wurde lokal mit derselben Pixelanalyse, OCR-Vorve
 
 Die implementierten Regeln und kleinen Erkennungsmasken sind Teil der Anwendung. Ihre Scores sind Ähnlichkeits-/Regelwerte und keine statistisch gemessenen Wahrscheinlichkeiten. Die Kalibrierungsaufnahme ist kein unabhängiger Benchmark und belegt keine allgemeine Genauigkeit von 80, 90 oder 100 Prozent.
 
-Andere Saisons, Auflösungen, HUD-Skalierungen, Kamerabewegungen, Farben, Sprachen und Teamkameraden können Fehl- oder Nichterkennungen verursachen. Direkte Zerstörung einer Truhe ist noch nicht separat nachgewiesen. Grauer Loot, sehr schnelle Aktionen, Loot außerhalb des untersuchten Bereichs und fremde Aktionen benötigen weitere beschriftete Aufnahmen.
+Eine zweite, längere private Aufnahme wurde zusätzlich lokal ausgewertet und zur Kalibrierung verwendet. Darin zeigen sich goldene EP-Meldungen, zusammengefasste EP-Zeilen, seltene Truhen, lootgebende Holzkisten und verdeckende Begleiter-Meldungen. Der markierte erste Abschnitt enthält elf zählbare Aktionen. Der vollständige Clip enthält weiterhin verpasste Aktionen, insbesondere kurze/abgeschnittene Behälter-Hinweise und Loot außerhalb der konservativen Bildbereiche. Die längere Aufnahme ist nach dieser Kalibrierung ebenfalls kein unabhängiger Benchmark. **Das Ziel von 95 % ist nicht nachgewiesen.** Es wurde kein neuronales Modell mit behaupteter Genauigkeit trainiert, sondern die lokale Bild-/Textanalyse kalibriert.
+
+Andere Saisons, Auflösungen, HUD-Skalierungen, Kamerabewegungen, Farben, Sprachen und Teamkameraden können Fehl- oder Nichterkennungen verursachen. Grauer Loot, sehr schnelle Aktionen, verdeckte Öffnungen und fremde Aktionen benötigen weitere beschriftete Aufnahmen. Für eine belastbare Quote sind neue, unabhängige Clips mit TP/FP/FN pro eigener Öffnung nötig.
 
 Windows-CI prüft GUI, native OCR und das veröffentlichte Paket. Live-Ablauf mit Fortnite, tatsächliche Aufnahmeberechtigung, Overlay und Ressourcenbedarf müssen zusätzlich am Ziel-PC geprüft werden. Bildanalyse ist freiwillig, lokal und nur für das erkannte Fortnite-Fenster im Vordergrund; keine Bilder oder OCR-Texte werden im Live-Betrieb gespeichert oder hochgeladen. Das visuelle Sound-Symbol wird ausgewertet, kein Audio.
 

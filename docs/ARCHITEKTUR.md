@@ -30,6 +30,6 @@ Die lokale Warteschlange speichert Befehle vor dem Versand und entfernt sie erst
 
 ## Grenzen
 
-Es existiert kein geografischer Inselpfad. Die Grafik zeigt den zeitlichen Truhenverlauf. Windows v1.2.0 verwendet normalisierte HUD-Merkmale, lokale Schrift-/Symbolmasken und zeitliche Abbau-/Loot-Hinweise; OCR läuft unabhängig für Spieltexte, Lobby und Ergebnis. Die Entwicklung wurde anhand eines echten Kalibrierungsclips geprüft, ohne daraus eine allgemeine Genauigkeit abzuleiten. [Referenz und Grenzen](DETECTION_REFERENCE.md).
+Es existiert kein geografischer Inselpfad. Die Grafik zeigt den zeitlichen Truhenverlauf. Windows v1.3.0 verwendet normalisierte HUD-Merkmale, lokale Schrift-/Symbolmasken und zeitliche Abbau-/Loot-Hinweise; OCR läuft unabhängig für Spieltexte, Lobby und Ergebnis. Die Entwicklung wurde anhand zweier echter Kalibrierungsclips geprüft, ohne daraus eine allgemeine Genauigkeit abzuleiten. [Referenz und Grenzen](DETECTION_REFERENCE.md).
 
 Nur das erkannte native Fortnite-Fenster im Vordergrund wird nach Freigabe ausgewertet. Es gibt keinen RAM-, Netzwerkverkehr- oder Spieldateizugriff; Prozessmetadaten identifizieren ausschließlich den Fensterbesitzer. Live-Bilder und OCR-Texte werden weder gespeichert noch hochgeladen. Der Entwickler-Replay-Modus speichert lokale Diagnoseausgaben ausschließlich am gewählten Ort und verändert keine Produktionsstatistik.

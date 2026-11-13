@@ -10,10 +10,10 @@ Basis: dieselbe Origin wie die Website, Präfix `/api`. JSON, Zeitpunkte ISO 860
 | POST auth/password | `{currentPassword,newPassword}`; Pflichtwechsel serverseitig |
 | POST auth/refresh | `{refreshToken}`; neues Access-/Refresh-Paar, altes Refresh widerrufen |
 | POST auth/logout | Token-Familie widerrufen |
-| GET dashboard | `{user,users,matches,serverTime}`; Status/Summen nur aus DB |
+| GET dashboard | `{user,users,matches,serverTime}`; Status/Summen nur aus DB; users[].fortnite_running ist nach 20 Sekunden ohne Heartbeat false |
 | GET matches?userId=UUID | letzte 250 Matches, optional Spielerfilter |
 | GET matches/:id | `{match,events}` mit echten Eventzeitpunkten |
-| POST client/heartbeat | `{state,matchId?}`; Desktop-Access-Token erforderlich |
+| POST client/heartbeat | `{state,matchId?,fortniteRunning?}`; Desktop-Access-Token erforderlich |
 | POST client/matches | `{id,startedAt}`; idempotenter Start eines eigenen Matches |
 | POST client/events | `{clientEventId,matchId,occurredAt,confidence,detectorVersion}`; idempotent nach Nutzer/Event-ID |
 | POST client/matches/end | `{id,endedAt,status:"COMPLETED" oder "INCOMPLETE"}` |

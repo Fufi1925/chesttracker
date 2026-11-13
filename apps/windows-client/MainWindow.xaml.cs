@@ -104,6 +104,7 @@ public partial class MainWindow : Window
     private async Task RefreshStats()
     {
         var dashboard = await api.Send("dashboard", get: true);
+        overlay.SetPeers(OverlayPeers.Read(dashboard, accountId));
         var user = dashboard.GetProperty("users").EnumerateArray().FirstOrDefault(u => u.GetProperty("id").GetString() == accountId);
         if (user.ValueKind == JsonValueKind.Undefined) return;
         var de = CultureInfo.GetCultureInfo("de-DE"); TotalChests.Text = user.GetProperty("total_chests").GetInt32().ToString("N0", de); TotalMatches.Text = user.GetProperty("completed_matches").GetInt32().ToString("N0", de); AverageChests.Text = user.GetProperty("average").GetDouble().ToString("0.#", de); lastStats = DateTimeOffset.UtcNow;
@@ -113,18 +114,18 @@ public partial class MainWindow : Window
         if (testMode || closing || syncBusy || !authenticated) return; syncBusy = true;
         try
         {
-            await api.Flush(); await api.Send("client/heartbeat", new { state = monitoring ? detector.State.ToString() : "UNKNOWN", matchId = detector.MatchId });
-            if (DateTimeOffset.UtcNow - lastStats > TimeSpan.FromSeconds(10)) await RefreshStats();
+            await api.Flush(); await api.Send("client/heartbeat", new { state = monitoring ? detector.State.ToString() : "UNKNOWN", matchId = detector.MatchId, fortniteRunning = FortniteWindow.Find() is not null });
+            if (DateTimeOffset.UtcNow - lastStats > TimeSpan.FromSeconds(4)) await RefreshStats();
             online = true; ConnectionText.Text = monitoring ? "Erfassung aktiv · Ereignisse werden synchronisiert." : "Mit deinem privaten Server verbunden.";
         }
-        catch (Exception error) { online = false; ConnectionText.Text = UserError(error); if (error is ApiException a && a.Status == 401) { authenticated = false; await StopMonitoring(); LoginView.Visibility = Visibility.Visible; AccountView.Visibility = Visibility.Collapsed; LoginButton.IsDefault = true; WindowState = WindowState.Maximized; LoginStatus.Text = "Sitzung abgelaufen. Bitte erneut anmelden."; } }
+        catch (Exception error) { online = false; overlay.SetPeers([]); ConnectionText.Text = UserError(error); if (error is ApiException a && a.Status == 401) { authenticated = false; await StopMonitoring(); LoginView.Visibility = Visibility.Visible; AccountView.Visibility = Visibility.Collapsed; LoginButton.IsDefault = true; WindowState = WindowState.Maximized; LoginStatus.Text = "Sitzung abgelaufen. Bitte erneut anmelden."; } }
         finally { syncBusy = false; ServerDot.Fill = Brush(online ? "#4FC48B" : "#727C8C"); ServerState.Text = online ? "Verbunden" : "Offline"; QueueText.Text = api.Pending == 0 ? "Alle Ereignisse synchronisiert" : $"{api.Pending} Ereignisse warten auf Verbindung"; UpdateOverlay(); }
     }
     private async void Game_Click(object sender, RoutedEventArgs e)
     {
         if (monitoring) { await StopMonitoring(); return; }
         if (replaying || !authenticated) return;
-        monitoring = true; overlayWanted = true; detector = new("visual-hud-reference-v2", TimeSpan.FromSeconds(2)); GameButton.Content = "Fortnite stoppen"; GameStatus.Text = "Warte auf Fortnite …"; ConnectionText.Text = "Stoppen beendet die Erfassung, nicht das Spiel.";
+        monitoring = true; overlayWanted = true; detector = new("visual-hud-reference-v3", TimeSpan.FromMilliseconds(800)); GameButton.Content = "Fortnite stoppen"; GameStatus.Text = "Warte auf Fortnite …"; ConnectionText.Text = "Stoppen beendet die Erfassung, nicht das Spiel.";
         try { if (FortniteWindow.Find() is null) FortniteWindow.Launch(); } catch { ConnectionText.Text = "Epic Games Launcher nicht gefunden. Starte Fortnite manuell; das Fenster wird automatisch erkannt."; }
         await ScanGame();
     }
@@ -177,7 +178,7 @@ public partial class MainWindow : Window
         overlay.Update(displayName, detector.State, detector.Count, online, false, capture is not null, hint);
     }
     private void ToggleOverlay() { if (!monitoring) return; overlayWanted = !overlayWanted; if (!overlayWanted) overlay.Hide(); else if (game is not null) { overlay.Show(); UpdateOverlay(); } }
-    private async void Logout_Click(object sender, RoutedEventArgs e) { await StopMonitoring(); try { await api.Logout(); } catch { } authenticated = false; online = false; Password.Clear(); AccountView.Visibility = Visibility.Collapsed; LoginView.Visibility = Visibility.Visible; LoginButton.IsDefault = true; WindowState = WindowState.Maximized; LoginStatus.Text = ""; if (SystemParameters.ClientAreaAnimation) animation?.Begin(this, true); }
+    private async void Logout_Click(object sender, RoutedEventArgs e) { await StopMonitoring(); try { await api.Logout(); } catch { } authenticated = false; online = false; overlay.SetPeers([]); Password.Clear(); AccountView.Visibility = Visibility.Collapsed; LoginView.Visibility = Visibility.Visible; LoginButton.IsDefault = true; WindowState = WindowState.Maximized; LoginStatus.Text = ""; if (SystemParameters.ClientAreaAnimation) animation?.Begin(this, true); }
     private void Website_Click(object sender, RoutedEventArgs e) { try { Process.Start(new ProcessStartInfo(api.Server) { UseShellExecute = true }); } catch (Exception error) { ConnectionText.Text = UserError(error); } }
     private async void Replay_Click(object sender, RoutedEventArgs e)
     {

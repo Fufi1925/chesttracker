@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS presence (
  user_id uuid PRIMARY KEY REFERENCES users(id), state text NOT NULL,
  last_heartbeat_at timestamptz NOT NULL DEFAULT now(), match_id uuid REFERENCES matches(id) ON DELETE SET NULL
 );
+ALTER TABLE presence ADD COLUMN IF NOT EXISTS fortnite_running boolean NOT NULL DEFAULT false;
 CREATE TABLE IF NOT EXISTS audit_log (
  id uuid PRIMARY KEY, admin_user_id uuid NOT NULL REFERENCES users(id), action text NOT NULL,
  target_type text NOT NULL, target_id text NOT NULL, before_json jsonb, after_json jsonb,
@@ -40,5 +41,5 @@ CREATE TABLE IF NOT EXISTS audit_log (
 CREATE TABLE IF NOT EXISTS rate_limits (
  key text PRIMARY KEY, hits integer NOT NULL, window_start timestamptz NOT NULL
 );
-INSERT INTO schema_migrations(version) VALUES(1) ON CONFLICT DO NOTHING;
+INSERT INTO schema_migrations(version) VALUES(1),(2) ON CONFLICT DO NOTHING;
 `;

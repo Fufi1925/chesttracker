@@ -15,4 +15,8 @@ public sealed class HudTextTests
  [Fact]public void CurrentLobbyPanelIsAccepted(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"","BATTLE\nROYALE SPIELEN","","");Assert.Equal(GameState.LOBBY,o.State);}
  [Fact]public void CurrentHudDoesNotNeedStormWordWhenVisualHudIsPresent(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"0:53 78","","","",true);Assert.Equal(GameState.IN_MATCH,o.State);}
  [Fact]public void ResultOverridesSpectatedGameplayHud(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"0:53 78","","","DEINE PLATZIERUNG IST #35",true);Assert.Equal(GameState.MATCH_END_PENDING,o.State);}
+ [Fact]public void MinimapAndClockCanRecoverPartiallyHiddenHealthHud(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"0:53 78","","","",false,true);Assert.Equal(GameState.IN_MATCH,o.State);}
+ [Fact]public void MinimapWithoutClockDoesNotInventMatch(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"Fortnite","","","",false,true);Assert.Equal(GameState.UNKNOWN,o.State);}
+ [Fact]public void VictoryClosesTheRound(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"","","","#1 EPISCHER SIEG",true);Assert.Equal(GameState.MATCH_END_PENDING,o.State);}
+
 }
