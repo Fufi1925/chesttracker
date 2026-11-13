@@ -10,7 +10,7 @@ Private Truhenstatistik für Fufi und bis zu fünf Freunde. Deutsche, responsive
 - Windows-Overlay oben rechts, globaler Hotkey O/F8/F9, Tray, DPAPI-geschützte Sitzungen und dauerhafte Ereigniswarteschlange, idempotente Synchronisierung.
 - Konservativer Replay-Detektor mit Hysterese, lokalem Template-Abgleich und synthetischen Testfällen.
 
-**Die lokale Live-Bildanalyse ist in Windows v1.1.0 optional aktivierbar, bleibt aber unvalidiert.** Sie verwendet dokumentierte Windows-Fensteraufnahme und lokale Tesseract-OCR. Es liegen keine echten Testvideos vor; die aktuellen HUD-Hinweise können von den implementierten Mustern abweichen. Kein Versprechen zuverlässiger Erkennung, Regelverträglichkeit oder Sperrensicherheit. Ohne eindeutige Hinweise werden keine Werte erfunden.
+**Windows v1.2.0 korrigiert die HUD-Erkennung und ergänzt zeitliche Abbau-/Loot-Hinweise.** Im bereitgestellten Referenzclip werden alle fünf markierten Truhenaktionen ohne zusätzliche Ereignisse erkannt, anschließend Matchende und Lobby. Dies ist eine Kalibrierungsaufnahme, keine allgemeine Genauigkeitsgarantie. Die lokale Bildanalyse muss im Accountfenster aktiviert werden; Fenstererkennung und Serververbindung allein reichen nicht. [Referenz, Messungen und Grenzen](docs/DETECTION_REFERENCE.md).
 
 ## Windows herunterladen
 
@@ -53,7 +53,7 @@ dotnet test apps/windows-client/Windows.Tests/ChestTracker.Windows.Tests.csproj
 powershell -ExecutionPolicy Bypass -File scripts/build-windows.ps1
 ```
 
-Buildausgabe: `artifacts/windows/ChestTracker.exe`; Paket: `artifacts/ChestTracker-win-x64.zip`. CI baut auf Windows und prüft API/Web sowie Browserabläufe. Die Pixeltests benötigen Windows. Das private Release enthält das Paket und seine SHA-256-Prüfsumme.
+Buildausgabe: `artifacts/windows/ChestTracker.exe`; Paket: `artifacts/ChestTracker-win-x64.zip`. CI baut auf Windows und prüft API/Web sowie Browserabläufe. Die Pixeltests benötigen Windows. Das vom Eigentümer öffentlich freigegebene Release enthält das Paket und seine SHA-256-Prüfsumme.
 
 ## Struktur
 

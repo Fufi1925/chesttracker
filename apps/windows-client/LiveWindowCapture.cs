@@ -23,7 +23,14 @@ internal sealed class LiveWindowCapture : IDisposable
     private TesseractEngine? ocr;
     private IntPtr hwnd;
     private bool stopped, busy;
-    private DateTimeOffset lastSample;
+    private DateTimeOffset lastSample, lastImage, lastOcrRequest, textAt;
+    private readonly PixelHudDetector pixelDetector = new();
+    private readonly GameplayAnalyzer analyzer = new();
+    private HudText text = new();
+    private bool ocrBusy;
+    private int generation;
+    private string? ocrError;
+    public DateTimeOffset LastImageAt { get { lock (gate) return lastImage; } }
     public event Action<Observation>? Observed;
     public event Action<string>? Diagnostic;
     public void Start(IntPtr window)
@@ -46,46 +53,100 @@ internal sealed class LiveWindowCapture : IDisposable
         lock (gate) { if (stopped || busy) return; busy = true; }
         try
         {
-            var at = DateTimeOffset.UtcNow; if (at - lastSample < TimeSpan.FromMilliseconds(300)) return; lastSample = at;
+            var at = DateTimeOffset.UtcNow;
+            if (at - lastSample < TimeSpan.FromMilliseconds(125)) return;
+            lastSample = at;
             if (!FortniteWindow.IsForeground(hwnd))
             {
-                Observed?.Invoke(new(at, GameState.UNKNOWN, 0, 0, 0)); Diagnostic?.Invoke("Fortnite im Hintergrund · Bildanalyse pausiert"); return;
+                ResetAnalysis();
+                Observed?.Invoke(new(at, GameState.UNKNOWN, 0, 0, 0));
+                Diagnostic?.Invoke("Fortnite im Hintergrund · Bildanalyse pausiert"); return;
             }
             var size = frame.ContentSize; if (size.Width < 100 || size.Height < 100) return;
             using var surface = await SoftwareBitmap.CreateCopyFromSurfaceAsync(frame.Surface);
-            if (surface.PixelWidth != size.Width || surface.PixelHeight != size.Height) { if(!stopped)sender.Recreate(device!, DirectXPixelFormat.B8G8R8A8UIntNormalized, 2, size);return; }
+            if (surface.PixelWidth != size.Width || surface.PixelHeight != size.Height)
+            { ResetAnalysis(); if (!stopped) sender.Recreate(device!, DirectXPixelFormat.B8G8R8A8UIntNormalized, 2, size); return; }
             using var bitmap = SoftwareBitmap.Convert(surface, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
             if (bitmap.PixelWidth > 7680 || bitmap.PixelHeight > 4320) throw new NotSupportedException("Bitte eine Auflösung bis 7680 × 4320 verwenden.");
             var buffer = new Windows.Storage.Streams.Buffer((uint)(bitmap.PixelWidth * bitmap.PixelHeight * 4)); bitmap.CopyToBuffer(buffer);
             var pixels = new byte[buffer.Length]; using (var reader = DataReader.FromBuffer(buffer)) reader.ReadBytes(pixels);
             var width = bitmap.PixelWidth; var height = bitmap.PixelHeight;
-            var observation = await Task.Run(() =>
+            var result = await Task.Run(() =>
             {
-                using var image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-                var data = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-                try { for (int y = 0; y < height; y++) Marshal.Copy(pixels, y * width * 4, data.Scan0 + y * data.Stride, width * 4); } finally { image.UnlockBits(data); }
-                var gameplay = ReadRegion(image, .68, 0, .32, .38);
-                var lobby = ReadRegion(image, .50, .55, .50, .45);
-                var notifications = ReadRegion(image, .20, .28, .60, .46);
-                var loading = ReadRegion(image, 0, .70, .65, .30);
-                return HudTextDetector.Analyze(at, gameplay, lobby, notifications, loading);
+                using var source = FromPixels(pixels, width, height);
+                using var normalized = new Bitmap(PixelHudDetector.Width, PixelHudDetector.Height, PixelFormat.Format32bppArgb);
+                using (var graphics = Graphics.FromImage(normalized))
+                { graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic; graphics.DrawImage(source, new Rectangle(0, 0, normalized.Width, normalized.Height)); }
+                var normalizedPixels = CopyPixels(normalized);
+                QueueOcr(normalizedPixels, at);
+                HudText currentText;
+                lock (gate) currentText = at - textAt <= TimeSpan.FromSeconds(2) ? text : new();
+                return analyzer.Analyze(at, pixelDetector.Analyze(at, normalizedPixels), currentText);
             });
-            if (!stopped) { Observed?.Invoke(observation); Diagnostic?.Invoke("Lokale OCR aktiv · echte Spielbilder noch nicht validiert"); }
+            if (!stopped)
+            {
+                lock (gate) lastImage = at;
+                Observed?.Invoke(result.Observation);
+                Diagnostic?.Invoke(result.Detail + (ocrError is null ? " · lokale Analyse aktiv" : " · OCR: " + ocrError));
+            }
         }
-        catch (Exception error) { if (!stopped) { Observed?.Invoke(new(DateTimeOffset.UtcNow, GameState.UNKNOWN, 0, 0, 0)); Diagnostic?.Invoke("Bildanalyse pausiert: " + error.GetType().Name); } }
-        finally { lock (gate) { busy = false; if (stopped) ReleaseEngine(); } }
+        catch (Exception error)
+        {
+            ResetAnalysis();
+            if (!stopped) { Observed?.Invoke(new(DateTimeOffset.UtcNow, GameState.UNKNOWN, 0, 0, 0)); Diagnostic?.Invoke("Bildanalyse pausiert: " + error.GetType().Name); }
+        }
+        finally { lock (gate) { busy = false; if (stopped && !ocrBusy) ReleaseEngine(); } }
+    }
+    private void ResetAnalysis()
+    {
+        pixelDetector.Reset(); analyzer.Reset();
+        lock (gate) { text = new(); textAt = default; generation++; }
+    }
+    private void QueueOcr(byte[] pixels, DateTimeOffset at)
+    {
+        int requestGeneration;
+        lock (gate)
+        {
+            if (stopped || ocrBusy || at - lastOcrRequest < TimeSpan.FromMilliseconds(750)) return;
+            ocrBusy = true; lastOcrRequest = at; requestGeneration = generation;
+        }
+        _ = Task.Run(() =>
+        {
+            try
+            {
+                var values = new List<(string Name, string Text)>();
+                foreach (var input in HudOcrInputs.Create(pixels))
+                {
+                    using var pix = Pix.LoadFromMemory(input.ToPgm());
+                    using var page = ocr!.Process(pix, input.SingleBlock ? PageSegMode.SingleBlock : PageSegMode.SparseText);
+                    values.Add((input.Name, page.GetText()));
+                }
+                var result = HudOcrInputs.Combine(values);
+                lock (gate) if (!stopped && generation == requestGeneration) { text = result; textAt = at; ocrError = null; }
+            }
+            catch (Exception error) { lock (gate) if (!stopped) ocrError = error.GetType().Name; }
+            finally { lock (gate) { ocrBusy = false; if (stopped && !busy) ReleaseEngine(); } }
+        });
+    }
+    private static Bitmap FromPixels(byte[] pixels, int width, int height)
+    {
+        var image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+        var data = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+        try { for (int y = 0; y < height; y++) Marshal.Copy(pixels, y * width * 4, data.Scan0 + y * data.Stride, width * 4); }
+        finally { image.UnlockBits(data); }
+        return image;
+    }
+    private static byte[] CopyPixels(Bitmap image)
+    {
+        var pixels = new byte[image.Width * image.Height * 4];
+        var data = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+        try { for (int y = 0; y < image.Height; y++) Marshal.Copy(data.Scan0 + y * data.Stride, pixels, y * image.Width * 4, image.Width * 4); }
+        finally { image.UnlockBits(data); }
+        return pixels;
     }
     private static Direct3D11CaptureFrame? NextFrame(Direct3D11CaptureFramePool source){try{return source.TryGetNextFrame();}catch{return null;}}
     private void ReleaseEngine(){ocr?.Dispose();ocr=null;if(device is IDisposable disposable)disposable.Dispose();device=null;}
-    private string ReadRegion(Bitmap image, double x, double y, double width, double height)
-    {
-        var rect = new Rectangle((int)(image.Width * x), (int)(image.Height * y), Math.Max(1, (int)(image.Width * width)), Math.Max(1, (int)(image.Height * height)));
-        using var cropped = new Bitmap(Math.Min(1600, rect.Width * 2), Math.Min(900, rect.Height * 2));
-        using (var graphics = Graphics.FromImage(cropped)) graphics.DrawImage(image, new Rectangle(0, 0, cropped.Width, cropped.Height), rect, GraphicsUnit.Pixel);
-        using var bytes = new MemoryStream(); cropped.Save(bytes, System.Drawing.Imaging.ImageFormat.Png); using var pix = Pix.LoadFromMemory(bytes.ToArray()); using var page = ocr!.Process(pix, PageSegMode.SparseText);
-        return page.GetText();
-    }
-    public void Dispose() { bool release;lock (gate) { if (stopped) return; stopped = true;release=!busy; }session?.Dispose();session=null;if(pool is not null){pool.FrameArrived-=FrameArrived;pool.Dispose();pool=null;}if(release){lock(gate)ReleaseEngine();} }
+    public void Dispose() { bool release;lock (gate) { if (stopped) return; stopped = true;release=!busy&&!ocrBusy; }session?.Dispose();session=null;if(pool is not null){pool.FrameArrived-=FrameArrived;pool.Dispose();pool=null;}if(release){lock(gate)ReleaseEngine();} }
 }
 
 internal static class CaptureInterop

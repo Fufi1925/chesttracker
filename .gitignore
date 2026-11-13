@@ -12,3 +12,6 @@ bin/
 obj/
 *.tsbuildinfo
 *.user
+
+# Private gameplay references and derived test data stay local.
+tests/fixtures/reference-*.jsonl

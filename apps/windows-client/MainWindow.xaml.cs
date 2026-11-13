@@ -30,7 +30,7 @@ public partial class MainWindow : Window
     private GameWindow? game;
     private LiveWindowCapture? capture;
     private ChestDetector detector = new();
-    private DateTimeOffset lastStats, nextCaptureAttempt;
+    private DateTimeOffset lastStats, nextCaptureAttempt, captureStartedAt;
     public MainWindow() : this(false) { }
     internal MainWindow(bool testMode)
     {
@@ -124,7 +124,7 @@ public partial class MainWindow : Window
     {
         if (monitoring) { await StopMonitoring(); return; }
         if (replaying || !authenticated) return;
-        monitoring = true; overlayWanted = true; detector = new("tesseract-ocr-experimental-v1", TimeSpan.FromSeconds(2)); GameButton.Content = "Fortnite stoppen"; GameStatus.Text = "Warte auf Fortnite …"; ConnectionText.Text = "Stoppen beendet die Erfassung, nicht das Spiel.";
+        monitoring = true; overlayWanted = true; detector = new("visual-hud-reference-v2", TimeSpan.FromSeconds(2)); GameButton.Content = "Fortnite stoppen"; GameStatus.Text = "Warte auf Fortnite …"; ConnectionText.Text = "Stoppen beendet die Erfassung, nicht das Spiel.";
         try { if (FortniteWindow.Find() is null) FortniteWindow.Launch(); } catch { ConnectionText.Text = "Epic Games Launcher nicht gefunden. Starte Fortnite manuell; das Fenster wird automatisch erkannt."; }
         await ScanGame();
     }
@@ -140,10 +140,16 @@ public partial class MainWindow : Window
             {
                 capture?.Dispose(); capture = new LiveWindowCapture(); var currentCapture = capture;
                 capture.Observed += observation => { if (!closing) Dispatcher.InvokeAsync(() => { if (ReferenceEquals(capture, currentCapture)) ApplyObservation(observation, true); }); };
-                capture.Diagnostic += message => { if (!closing) Dispatcher.InvokeAsync(() => DetectionStatus.Text = message); };
-                capture.Start(found.Handle); DetectionStatus.Text = "Fensteraufnahme aktiv · OCR experimentell";
+                capture.Diagnostic += message => { if (!closing) Dispatcher.InvokeAsync(() => { if (ReferenceEquals(capture, currentCapture)) DetectionStatus.Text = message; }); };
+                captureStartedAt = DateTimeOffset.UtcNow; capture.Start(found.Handle); DetectionStatus.Text = "Fensteraufnahme gestartet · warte auf Spielbilder";
             }
             if (EnableCapture.IsChecked != true) { GameStatus.Text = "Fortnite erkannt"; GameDot.Fill = Brush("#727C8C"); MatchStatus.Text = "Bildanalyse ist ausgeschaltet"; }
+            if (capture is not null && FortniteWindow.IsForeground(found.Handle) &&
+                DateTimeOffset.UtcNow - (capture.LastImageAt == default ? captureStartedAt : capture.LastImageAt) > TimeSpan.FromSeconds(6))
+            {
+                ApplyObservation(new(DateTimeOffset.UtcNow, GameState.UNKNOWN, 0, 0, 0), true);
+                DetectionStatus.Text = "Keine aktuellen Spielbilder. Bitte Fortnite im Fenster-Vollbild testen.";
+            }
             if (overlayWanted && !overlay.IsVisible) overlay.Show();
             UpdateOverlay();
         }
@@ -155,14 +161,21 @@ public partial class MainWindow : Window
     {
         if (closing || send && (!monitoring || !authenticated)) return; var update = detector.Process(observation);
         if (send) { if (update.Match is { } m) api.Enqueue(m.Status == "ACTIVE" ? "client/matches" : "client/matches/end", m.Status == "ACTIVE" ? (object)new { id = m.Id, startedAt = m.StartedAt } : new { id = m.Id, endedAt = m.EndedAt, status = m.Status }); if (update.Event is { } c) api.Enqueue("client/events", new { clientEventId = c.ClientEventId, matchId = c.MatchId, occurredAt = c.OccurredAt, confidence = c.Confidence, detectorVersion = c.DetectorVersion }); api.TrackMatch(update.MatchId, observation.At); }
-        GameStatus.Text = update.State switch { GameState.IN_MATCH => "Im Match", GameState.LOBBY => "In der Lobby", GameState.LOADING => "Ladebildschirm", GameState.MATCH_END_PENDING => "Matchende wird geprüft", _ => "Fortnite erkannt · Status unbekannt" };
+        GameStatus.Text = update.State switch { GameState.IN_MATCH => "Im Match", GameState.LOBBY => "In der Lobby", GameState.LOADING => "Ladebildschirm", GameState.MATCH_END_PENDING => update.MatchId is null ? "Match beendet" : "Matchende wird geprüft", _ => "Fortnite erkannt · Status unbekannt" };
         GameDot.Fill = Brush(update.State == GameState.IN_MATCH ? "#5E9FF7" : update.State == GameState.LOBBY ? "#4FC48B" : "#727C8C");
         MatchStatus.Text = update.State == GameState.IN_MATCH ? $"Truhen in dieser Runde: {update.Count}" : update.State == GameState.LOBBY ? "Bereit für die nächste Runde" : "Warte auf eindeutige Bildhinweise"; UpdateOverlay();
     }
     private void EndIncomplete() { var m = detector.MarkIncomplete(DateTimeOffset.UtcNow); if (m is not null && api.Credentials is not null) api.Enqueue("client/matches/end", new { id = m.Id, endedAt = m.EndedAt, status = m.Status }); api.TrackMatch(null, DateTimeOffset.UtcNow); }
     private async Task StopMonitoring() { monitoring = false; capture?.Dispose(); capture = null; game = null; EndIncomplete(); GameButton.Content = "Fortnite starten"; GameStatus.Text = "Erfassung gestoppt"; MatchStatus.Text = "Kein laufendes Match"; GameDot.Fill = Brush("#727C8C"); overlay.Hide(); await Synchronize(); }
     private void CaptureSetting_Changed(object sender, RoutedEventArgs e) { if (!IsLoaded) return; SaveSettings(); if (EnableCapture.IsChecked != true) { capture?.Dispose(); capture = null; EndIncomplete(); DetectionStatus.Text = "Bildanalyse ausgeschaltet."; } else { nextCaptureAttempt = default; DetectionStatus.Text = "Experimentelle lokale Analyse freigegeben. Keine Bilder werden hochgeladen."; } }
-    private void UpdateOverlay() { if (!authenticated || !monitoring || game is null) return; overlay.Update(displayName, detector.State, detector.Count, online, false, capture is not null); }
+    private void UpdateOverlay()
+    {
+        if (!authenticated || !monitoring || game is null) return;
+        string? hint = EnableCapture.IsChecked != true ? "Bildanalyse aus" : capture is null ? "Analyse startet" :
+            !FortniteWindow.IsForeground(game.Handle) ? "Analyse pausiert" :
+            DateTimeOffset.UtcNow - (capture.LastImageAt == default ? captureStartedAt : capture.LastImageAt) > TimeSpan.FromSeconds(6) ? "Keine Spielbilder" : null;
+        overlay.Update(displayName, detector.State, detector.Count, online, false, capture is not null, hint);
+    }
     private void ToggleOverlay() { if (!monitoring) return; overlayWanted = !overlayWanted; if (!overlayWanted) overlay.Hide(); else if (game is not null) { overlay.Show(); UpdateOverlay(); } }
     private async void Logout_Click(object sender, RoutedEventArgs e) { await StopMonitoring(); try { await api.Logout(); } catch { } authenticated = false; online = false; Password.Clear(); AccountView.Visibility = Visibility.Collapsed; LoginView.Visibility = Visibility.Visible; LoginButton.IsDefault = true; WindowState = WindowState.Maximized; LoginStatus.Text = ""; if (SystemParameters.ClientAreaAnimation) animation?.Begin(this, true); }
     private void Website_Click(object sender, RoutedEventArgs e) { try { Process.Start(new ProcessStartInfo(api.Server) { UseShellExecute = true }); } catch (Exception error) { ConnectionText.Text = UserError(error); } }

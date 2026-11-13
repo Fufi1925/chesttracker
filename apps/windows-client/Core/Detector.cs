@@ -15,7 +15,7 @@ public sealed class ChestDetector(string detectorVersion = "template-replay-unva
     public int Count { get; private set; }
     private GameState candidate = GameState.UNKNOWN;
     private int stableFrames, positiveFrames, absentFrames;
-    private bool notificationLatched;
+    private bool notificationLatched, resultLatched;
     private DateTimeOffset lastFrame, lastEvent, startedAt;
     public DetectorUpdate Process(Observation frame)
     {
@@ -28,9 +28,14 @@ public sealed class ChestDetector(string detectorVersion = "template-replay-unva
         var observed = frame.StateConfidence >= .92 ? frame.State : GameState.UNKNOWN;
         if (candidate == observed) stableFrames++; else { candidate = observed; stableFrames = 1; }
         if (observed == GameState.OFFLINE) State = GameState.OFFLINE;
-        else if (observed == GameState.UNKNOWN && stableFrames >= 3) State = GameState.UNKNOWN;
-        else if (observed == GameState.LOADING && stableFrames >= 3) State = GameState.LOADING;
-        else if (observed == GameState.IN_MATCH && stableFrames >= 4)
+        else if (observed == GameState.UNKNOWN && stableFrames >= 3) State = resultLatched ? GameState.MATCH_END_PENDING : GameState.UNKNOWN;
+        else if (observed == GameState.MATCH_END_PENDING && stableFrames >= 3)
+        {
+            if (MatchId is not null) change = new(MatchId.Value, startedAt, frame.At, "COMPLETED");
+            MatchId = null; State = GameState.MATCH_END_PENDING; positiveFrames = 0; resultLatched = true;
+        }
+        else if (observed == GameState.LOADING && stableFrames >= 3) { State = GameState.LOADING; resultLatched = false; }
+        else if (observed == GameState.IN_MATCH && stableFrames >= 4 && !resultLatched)
         {
             State = GameState.IN_MATCH;
             if (MatchId is null)
@@ -46,7 +51,7 @@ public sealed class ChestDetector(string detectorVersion = "template-replay-unva
             if (stableFrames >= 12)
             {
                 if (MatchId is not null) change = new(MatchId.Value, startedAt, frame.At, "COMPLETED");
-                MatchId = null; State = GameState.LOBBY; Count = 0;
+                MatchId = null; State = GameState.LOBBY; Count = 0; resultLatched = false;
                 notificationLatched = false; positiveFrames = absentFrames = 0;
             }
         }

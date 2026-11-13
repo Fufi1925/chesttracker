@@ -16,6 +16,7 @@ foreach ($dll in @('msvcp140.dll','vcruntime140.dll','vcruntime140_1.dll')) {
 }
 Copy-Item tests/fixtures artifacts/windows/replays -Recurse -Force
 Copy-Item docs/WINDOWS.md artifacts/windows/README.md -Force
+Copy-Item docs/DETECTION_REFERENCE.md artifacts/windows/DETECTION_REFERENCE.md -Force
 Copy-Item docs/ERSTE_SCHRITTE.md artifacts/windows/START-HIER.txt -Force
 Copy-Item docs/THIRD_PARTY.md artifacts/windows/THIRD_PARTY.md -Force
 New-Item -ItemType Directory -Force artifacts/windows/licenses | Out-Null

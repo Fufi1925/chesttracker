@@ -1,16 +1,17 @@
-ChestTracker v1.1.0 – Neuer Windows-Client.
+ChestTracker v1.2.0 – HUD- und Truhenerkennung überarbeitet.
 
-- Dunkler Vollbild-Login mit mittiger Anmeldung und dezenter Hintergrundbewegung. Nach Login automatisch kompaktes 420 × 620-Fenster.
-- Anzeigename und echte Kontostatistiken oben. Fortnite starten/stoppen und frei wählbarer Hotkey darunter.
-- Start über den Epic-Launcher und automatische Erkennung eines bereits laufenden sichtbaren nativen Fortnite-Fensters. Stoppen beendet die Erfassung, ohne das Spiel gewaltsam zu schließen.
-- Optional aktivierbare lokale Windows-Fensteraufnahme mit Tesseract-OCR für deutsche/englische HUD-Hinweise. Keine Bilder oder OCR-Texte werden hochgeladen.
-- Konservativer Match-/Lobby-Zustandsautomat, Entprellung von Öffnungshinweisen, lokaler Puffer und idempotente Synchronisierung.
-- Vollständiges Paket mit OCR-Sprachmodellen, nativen Bibliotheken, Anleitung und Prüfsumme.
+- Behebt dauerhaft unbekannten Matchstatus beim aktuellen HUD ohne ausgeschriebenes STURM neben der Uhr.
+- Erkennt die eigene kurze EP-Meldung TRUHE und kombiniert bei Abbau Ziel-Lebensleiste, visuelles Truhen-Sound-Symbol und neu erscheinenden Loot über mehrere Bilder.
+- Schnellere lokale Bildanalyse mit separater OCR im Hintergrund. Ergebnisbildschirm schließt die Runde ab; Zuschauer-HUD erzeugt kein neues Match. Spielen-Schaltfläche und Lobby-Panel werden separat ausgewertet.
+- Aufnahmefreigabe direkt im Accountfenster. Overlay unterscheidet Bildanalyse aus, Analyse pausiert, Keine Spielbilder, Match und Lobby.
+- Unveränderte gemeinsame Anmeldung, Statistiksynchronisierung und sechs aktive Konten.
 
-Prüfungen: 24 Core-/Detektor-/Hotkey-Tests, 8 Windows-Tests einschließlich WPF-Vollbild-/Kompaktansicht, nativer OCR und Login; außerdem 22 API-Tests und 3 Browserabläufe. Der Build prüft zusätzlich, dass die veröffentlichte EXE ihre mitgelieferte OCR laden kann. Das Release wird erst aus einem erfolgreichen CI-Lauf veröffentlicht.
+Referenzdurchlauf: In einem privaten Kalibrierungsclip werden fünf markierte Truhenaktionen erkannt, ohne zusätzliche Ereignisse bei den enthaltenen Negativfällen. Anschließend werden Ergebnis und Lobby erkannt. Dies ist eine Kalibrierungsaufnahme und keine allgemeine Erkennungsquote. Direkte Zerstörung einer Truhe, andere HUDs und Teamaktionen benötigen weitere Aufnahmen und Tests. Details: docs/DETECTION_REFERENCE.md sowie die gleichnamige Datei im ZIP.
 
-Wichtig: Echte Fortnite-Truhenerkennung und Regelverträglichkeit sind weiterhin unvalidiert. Es liegen keine echten Testclips vor; aktuelle HUDs können von den implementierten Textmustern abweichen. Kein Versprechen zuverlässiger Zählung oder Sperrensicherheit. Nicht für Turniere verwenden. Unklare Bilder liefern Status unbekannt statt erfundener Werte. Die EXE ist nicht codesigniert.
+Prüfungen: 40 Core-/Detektortests, 9 Windows-Tests einschließlich WPF-Ansichten, nativer OCR und gemeinsamer Bildvorverarbeitung; außerdem 23 API-Tests und 3 Browserabläufe. Der Build prüft zusätzlich, dass die veröffentlichte EXE die mitgelieferte OCR laden kann. Veröffentlichung erfolgt aus einem erfolgreichen CI-Lauf. Ein echter Live-Test im Spiel am Ziel-PC steht noch aus.
 
-ZIP vollständig entpacken, alle beigefügten Dateien zusammenlassen und ChestTracker.exe starten. Website und EXE verwenden dieselben Zugangsdaten. Der öffentliche Download wurde vom Eigentümer ausdrücklich freigegeben; Website-Statistiken bleiben hinter dem App-Login.
+Installation: Alte EXE schließen, dieses ZIP in einen neuen Ordner vollständig entpacken, ChestTracker.exe starten und mit den bisherigen Daten anmelden. Direkt über Fortnite starten die Option Bildanalyse und Truhenzählung aktivieren einschalten. Fortnite muss während der Analyse im Vordergrund sein. Alle mitgelieferten Bibliotheken und tessdata zusammenlassen; bei Keine Spielbilder das Spiel im Fenster-Vollbild testen.
+
+Das Nutzer-Video, dessen Einzelbilder und daraus abgeleitete Testdaten werden nicht veröffentlicht. Live-Bilder und OCR-Texte bleiben im Arbeitsspeicher des PCs. Der öffentliche Download wurde vom Eigentümer freigegeben; Statistiken benötigen weiterhin den App-Login. Die EXE ist nicht codesigniert.
 
 Website: https://chesttracker-fufi1925s-projects.vercel.app

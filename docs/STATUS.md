@@ -6,7 +6,7 @@ Website/API, PostgreSQL-Migration und Bootstrap, private Konten/Statistiken, Rol
 
 ## Unvalidiert / bewusst gesperrt
 
-Echte Fortnite-Erkennung, geeignete eigene Öffnungshinweise, Genauigkeit, Ressourcenbedarf am Ziel-PC und Regel-/Anti-Cheat-Kompatibilität. Optionaler Windows-Graphics-Capture-/OCR-Adapter vorhanden, aber nicht an echten Fortnite-Aufnahmen validiert. Keine geografischen Routen. Vollbild-/Kompakt-GUI und OCR-Laden werden in Windows-CI geprüft; tatsächliche Aufnahme, Hotkeys und Overlay im Spiel erfordern weiterhin einen manuellen Test am Ziel-PC. Die EXE ist nicht signiert.
+V1.2.0 erkennt fünf markierte Truhenaktionen, Ergebnis und Lobby im bereitgestellten Kalibrierungsclip. Allgemeine Genauigkeit, andere HUDs/Situationen, Ressourcenbedarf am Ziel-PC und Regel-/Anti-Cheat-Kompatibilität bleiben unvalidiert. Siehe [Referenzbericht](DETECTION_REFERENCE.md). Keine geografischen Routen. Vollbild-/Kompakt-GUI und OCR-Laden werden in Windows-CI geprüft; tatsächliche Aufnahme, Hotkeys und Overlay im Spiel erfordern weiterhin einen manuellen Test am Ziel-PC. Die EXE ist nicht signiert.
 
 ## Infrastruktur
 

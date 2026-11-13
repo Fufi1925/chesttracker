@@ -1,4 +1,4 @@
-# Windows-Client v1.1.0
+# Windows-Client v1.2.0
 
 Voraussetzungen: Windows 10 ab Version 2004 (Build 19041) oder Windows 11, x64. Das ZIP vollständig entpacken; EXE, x64-Bibliotheken und tessdata zusammen lassen. .NET und OCR-Modelle sind enthalten.
 
@@ -8,15 +8,17 @@ Voraussetzungen: Windows 10 ab Version 2004 (Build 19041) oder Windows 11, x64. 
 4. Fortnite starten öffnet den Epic Games Launcher, wenn kein sichtbares natives Fortnite-Fenster läuft. Sobald ein solches Fenster vorhanden ist, wird es automatisch erkannt. Ein laufendes Spiel muss nicht erneut gestartet werden.
 5. Fortnite stoppen beendet ausschließlich ChestTracker-Erfassung und Bildaufnahme. Der Spielprozess wird nicht gewaltsam geschlossen.
 6. Mit Ändern neben dem Overlay-Hotkey eine Taste von A–Z oder F1–F12 auswählen. Escape bricht ab. Buchstaben werden beim Tippen nicht verschluckt. Im aktiven ChestTracker-Fenster schaltet normales Tippen das Overlay nicht um.
-7. Optional unter Einstellungen und Erkennung die lokale experimentelle Fensteranalyse aktivieren. Die Freigabe wird lokal gespeichert, startet aber niemals automatisch beim Öffnen der EXE: Die Erfassung beginnt erst nach Fortnite starten. Es werden nur Bilder des erkannten Fortnite-Fensters verarbeitet, nur solange dieses im Vordergrund ist. Bilddaten und erkannte Texte werden nicht hochgeladen oder als Dateien gespeichert.
+7. Direkt über Fortnite starten **Bildanalyse und Truhenzählung aktivieren** einschalten. Die Freigabe wird lokal gespeichert, startet aber niemals automatisch beim Öffnen der EXE: Die Erfassung beginnt erst nach Fortnite starten. Es werden nur Bilder des erkannten Fortnite-Fensters verarbeitet, nur solange dieses im Vordergrund ist. Bilddaten und erkannte Texte werden nicht hochgeladen oder als Dateien gespeichert.
 
 ## Was die automatische Analyse tatsächlich tut
 
-Windows Graphics Capture liefert die Bilder des gewählten Fenster-Handles, mit der normalen Windows-Aufnahmeanzeige. Lokale Tesseract-OCR wertet begrenzte HUD-Regionen auf Deutsch/Englisch aus. Der Zustandsautomat bestätigt Match-/Lobby-Hinweise über mehrere Bilder. Eine Truhenöffnung benötigt eine explizite Öffnungsmeldung und einen passenden positiven EP-/XP-Hinweis; eine sichtbare Truhe allein zählt nie. Mehrfachbilder werden entprellt. Metadaten/Events laufen über die idempotente API.
+Windows Graphics Capture liefert die Bilder des gewählten Fortnite-Fensters. Die Bildauswertung sucht den Match-HUD sowie eigene Truhen-EP-Meldungen. Beim Abbau werden Ziel-Lebensleiste, visuelles Truhen-Sound-Symbol und neu erscheinender Loot zeitlich kombiniert. Vorbeilaufen, ein Sound-Symbol oder vorhandener Loot allein sollen keine Truhe zählen. OCR für Lobby, Ergebnis und Texte läuft daneben im Hintergrund; Ereignisse werden entprellt und über die bestehende idempotente API synchronisiert.
 
-Ein geöffnetes Fortnite-Fenster bedeutet allein noch nicht Lobby oder Match. Fehlen eindeutige Hinweise, steht Status unbekannt. Bei Ladebildschirm, Fensterwechsel oder Alt-Tab wird kein Matchausgang erfunden. Stoppen/Schließen markiert ein laufendes Match nur als unvollständig.
+Im Referenzclip werden fünf markierte Aktionen ohne zusätzliche Zählung sowie Ergebnis und Lobby erkannt. Das ist keine allgemeine Trefferquote. Details und bekannte Grenzen, insbesondere bei direkter Zerstörung und anderen HUD-Skalierungen: [DETECTION_REFERENCE.md](DETECTION_REFERENCE.md).
 
-**Die Erkennung ist an echten Fortnite-Aufnahmen weiterhin unvalidiert.** Die implementierten Textmuster passen möglicherweise nicht zum aktuellen HUD, zur Sprache, UI-Skalierung oder zu realen Öffnungshinweisen. Es gibt keine nachgewiesene Live-Precision/Recall, keine Garantie, dass eigene und Team-Aktionen in jedem Fall unterscheidbar sind, und keine Zusage von Epic-Zulässigkeit oder Sperrensicherheit. Nicht bei Turnieren verwenden. Ohne eindeutige Treffer bleiben Zähler und Status konservativ.
+Das Overlay zeigt im Match Truhen, in der Lobby Lobby und nach dem Ergebnis die Rundensumme. **Bildanalyse aus**: Freigabe einschalten. **Analyse pausiert**: Fortnite in den Vordergrund holen. **Keine Spielbilder**: Fortnite im Fenster-Vollbild testen und Hinweise im Accountfenster beachten. **HUD unbekannt**: Bilder kommen an, aber der Spielzustand ist noch nicht eindeutig. Verbunden bedeutet allein, dass der Server erreichbar ist.
+
+Stoppen, Schließen oder Verlust des Fensters markiert ein noch aktives Match als unvollständig. Ein erkannter Ergebnisbildschirm oder eine stabil erkannte Lobby schließt es ab. Die tatsächlich erreichbare Bildrate und das Overlay im Spiel müssen am Ziel-PC geprüft werden. Die EXE ist nicht codesigniert.
 
 ## Offline-Test
 

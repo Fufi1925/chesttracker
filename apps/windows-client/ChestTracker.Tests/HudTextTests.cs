@@ -11,4 +11,8 @@ public sealed class HudTextTests
  [Fact]public void ContradictoryHudRemainsUnknown(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"STURM 1:30","SPIELEN BEREIT","","");Assert.Equal(GameState.UNKNOWN,o.State);}
  [Fact]public void ArbitraryVisibleWindowDoesNotCreateAMatch(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"Fortnite","Fortnite","","");Assert.Equal(GameState.UNKNOWN,o.State);}
  [Fact]public void EnglishAndSplitXpAreAccepted(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"STORM 0:45","","CHEST SEARCHED\n+ 100 XP","");Assert.True(o.OwnPlayerScore>.94);}
+ [Fact]public void ActualShortGermanXpNotificationIsAccepted(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"","","+600 EP TRUHE","",true);Assert.Equal(GameState.IN_MATCH,o.State);Assert.True(o.OwnPlayerScore>.94);}
+ [Fact]public void CurrentLobbyPanelIsAccepted(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"","BATTLE\nROYALE SPIELEN","","");Assert.Equal(GameState.LOBBY,o.State);}
+ [Fact]public void CurrentHudDoesNotNeedStormWordWhenVisualHudIsPresent(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"0:53 78","","","",true);Assert.Equal(GameState.IN_MATCH,o.State);}
+ [Fact]public void ResultOverridesSpectatedGameplayHud(){var o=HudTextDetector.Analyze(DateTimeOffset.UtcNow,"0:53 78","","","DEINE PLATZIERUNG IST #35",true);Assert.Equal(GameState.MATCH_END_PENDING,o.State);}
 }
