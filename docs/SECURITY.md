@@ -1,6 +1,6 @@
 # Sicherheit und Datenschutz
 
-- Keine öffentliche Registrierung, maximal vier aktive Konten. Fufi ist der einzige initiale Admin.
+- Keine öffentliche Registrierung, maximal sechs aktive Konten. Fufi ist der einzige initiale Admin.
 - Argon2id: 19 MiB, zwei Iterationen, Parallelität eins; zufällige Startpasswörter mit 192 Bit Entropie. Bootstrap überschreibt nie ein bestehendes Passwort.
 - Passwort-Hashes und Sitzungstokens erscheinen nicht in Profilen, Exporten oder Audit-Logs. Nur Admins erhalten neu erzeugte Freundes-Startpasswörter einmalig in ihrer authentifizierten Verwaltungsansicht.
 - Web-Cookies: HttpOnly, SameSite Strict, Secure bei Produktion. JSON-Mutationen werden per Origin geprüft. HTTPS für jede externe Desktop-Verbindung; HTTP ausschließlich an Loopback für Entwicklung.

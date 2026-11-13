@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { MAX_ACTIVE_ACCOUNTS } from "./limits";
 import { z } from "zod";
 import { db, transaction, type Database, type Row } from "./db";
 import {
@@ -408,8 +409,11 @@ export async function handle(req: Request): Promise<Response> {
           } = await tx.query(
             "SELECT COUNT(*)::int n FROM users WHERE enabled=true",
           );
-          if (c.n >= 4)
-            fail(409, "Es sind höchstens vier aktive Konten erlaubt.");
+          if (c.n >= MAX_ACTIVE_ACCOUNTS)
+            fail(
+              409,
+              `Es sind höchstens ${MAX_ACTIVE_ACCOUNTS} aktive Konten erlaubt.`,
+            );
           await tx.query(
             "INSERT INTO users(id,username,display_name,role,password_hash) VALUES($1,$2,$3,'USER',$4)",
             [id, input.username, input.displayName, hash],
@@ -484,7 +488,8 @@ export async function handle(req: Request): Promise<Response> {
             } = await tx.query(
               "SELECT COUNT(*)::int n FROM users WHERE enabled=true",
             );
-            if (c.n >= 4) fail(409, "Höchstens vier aktive Konten.");
+            if (c.n >= MAX_ACTIVE_ACCOUNTS)
+              fail(409, `Höchstens ${MAX_ACTIVE_ACCOUNTS} aktive Konten.`);
           }
           await tx.query(
             "UPDATE users SET display_name=COALESCE($1,display_name),enabled=COALESCE($2,enabled),password_hash=COALESCE($3,password_hash),must_change_password=CASE WHEN $3::text IS NULL THEN must_change_password ELSE true END WHERE id=$4",

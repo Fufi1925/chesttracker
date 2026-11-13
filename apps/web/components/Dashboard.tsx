@@ -26,6 +26,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import { Chart } from "./Chart";
+import { MAX_ACTIVE_ACCOUNTS } from "@/lib/limits";
 type User = {
   id: string;
   username: string;
@@ -317,7 +318,7 @@ export default function Dashboard() {
             ChestTracker<span className="private-tag">PRIVAT</span>
           </a>
           <div>
-            <p className="eyebrow">VIER SPIELER. EINE ÜBERSICHT.</p>
+            <p className="eyebrow">SECHS SPIELER. EINE ÜBERSICHT.</p>
             <h1>
               Jedes Match.
               <br />
@@ -567,7 +568,10 @@ export default function Dashboard() {
           ChestTracker
         </a>
         <div className="workspace-label">
-          DEIN PRIVATER KREIS <span>{data?.users.length ?? 1}/4</span>
+          DEIN PRIVATER KREIS{" "}
+          <span>
+            {data?.users.length ?? 1}/{MAX_ACTIVE_ACCOUNTS}
+          </span>
         </div>
         <nav>
           {nav.map((n) => (
@@ -1064,7 +1068,10 @@ export default function Dashboard() {
                 action={
                   <button
                     onClick={() => setModal("user")}
-                    disabled={adminUsers.filter((u) => u.enabled).length >= 4}
+                    disabled={
+                      adminUsers.filter((u) => u.enabled).length >=
+                      MAX_ACTIVE_ACCOUNTS
+                    }
                   >
                     <Plus size={16} />
                     Spieler hinzufügen
@@ -1074,7 +1081,7 @@ export default function Dashboard() {
               <div className="admin-summary">
                 <ShieldCheck size={18} />
                 Du verwaltest {adminUsers.filter((u) => u.enabled).length} von
-                maximal 4 aktiven Konten.
+                maximal {MAX_ACTIVE_ACCOUNTS} aktiven Konten.
               </div>
               <section className="panel">
                 <PanelHeader
@@ -1280,16 +1287,16 @@ export default function Dashboard() {
                   </li>
                   <li>Mit deinem ChestTracker-Konto anmelden.</li>
                   <li>
-                    Nach der Anmeldung erscheint das kompakte Fenster mit
-                    deiner Statistik. „Fortnite starten“ beginnt die Erfassung;
-                    den Overlay-Hotkey kannst du darunter ändern.
+                    Nach der Anmeldung erscheint das kompakte Fenster mit deiner
+                    Statistik. „Fortnite starten“ beginnt die Erfassung; den
+                    Overlay-Hotkey kannst du darunter ändern.
                   </li>
                 </ol>
                 <div className="info-box">
-                  Die lokale Fensteranalyse lässt sich in der Windows-App
-                  unter Einstellungen aktivieren. Sie ist experimentell und
-                  noch nicht an echten Fortnite-Aufnahmen validiert. Ohne
-                  eindeutige Hinweise bleibt der Spielstatus unbekannt.
+                  Die lokale Fensteranalyse lässt sich in der Windows-App unter
+                  Einstellungen aktivieren. Sie ist experimentell und noch nicht
+                  an echten Fortnite-Aufnahmen validiert. Ohne eindeutige
+                  Hinweise bleibt der Spielstatus unbekannt.
                 </div>
                 <a
                   className="primary"

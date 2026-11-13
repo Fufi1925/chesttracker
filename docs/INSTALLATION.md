@@ -7,7 +7,7 @@
 3. Vor dem ersten Betrieb lokal `scripts/setup.ts` gegen die verbundene Datenbank ausführen. Der Bootstrap ist ausschließlich ein lokales Script, kein öffentlicher HTTP-Endpunkt. Er legt `Fufi` als Admin mit Argon2id-Hash an und schreibt das zufällige Startpasswort nur in `.secrets/fufi-startpasswort.txt`, Modus 0600, Verzeichnis 0700. Das Passwort nie in Hosting-Logs oder CI eingeben.
 4. `npm run build`, `npm test` und Browser-Tests müssen erfolgreich sein. Git-Commit auf Vercel als Production deployen. `/api/health` prüft Datenbank und Migration. Keine Migration oder Passwortausgabe im Build.
 5. Die Website hat eine eigene Anmeldung. Nach ausdrücklicher Nutzerfreigabe gilt Vercel Deployment Protection nur für Vorschau-Deployments. Die Produktionswebsite und die Windows-API benötigen keine zusätzliche Vercel-Anmeldung; der ChestTracker-Login bleibt verpflichtend.
-6. Beim ersten Login das Startpasswort ändern. Danach bis zu drei Konten unter Admin anlegen und deren einmalig sichtbare Startpasswörter sicher weitergeben.
+6. Beim ersten Login das Startpasswort ändern. Danach bis zu fünf Konten unter Admin anlegen und deren einmalig sichtbare Startpasswörter sicher weitergeben.
 
 Bei bestehendem Projekt ohne Git-Verknüpfung erfolgen weitere Deployments explizit über Vercel. Für automatische Deployments in Vercel unter Settings → Git das private Repository verbinden. Der CI-Workflow prüft jeden Push und stellt das Windows-Paket als privates Artifact bereit.
 
@@ -19,7 +19,7 @@ Ohne Docker eine PostgreSQL-Datenbank bereitstellen und `DATABASE_URL` setzen. `
 
 ## Daten sichern
 
-Der Admin-JSON-Export enthält Kontoprofile ohne Passwort-Hashes, Matches, Events und Audit-Logs. Er ist ein lesbarer Datenexport, kein automatischer vollständiger Restore. Für vollständige Backups Neon-Snapshots/Branches oder `pg_dump` verwenden und die Wiederherstellung in einer separaten Datenbank prüfen. Backups privat und verschlüsselt verwahren. Aufbewahrung und Löschung nach den Bedürfnissen der vier Nutzer festlegen.
+Der Admin-JSON-Export enthält Kontoprofile ohne Passwort-Hashes, Matches, Events und Audit-Logs. Er ist ein lesbarer Datenexport, kein automatischer vollständiger Restore. Für vollständige Backups Neon-Snapshots/Branches oder `pg_dump` verwenden und die Wiederherstellung in einer separaten Datenbank prüfen. Backups privat und verschlüsselt verwahren. Aufbewahrung und Löschung nach den Bedürfnissen der sechs Nutzer festlegen.
 
 ## Windows-Build und Release
 

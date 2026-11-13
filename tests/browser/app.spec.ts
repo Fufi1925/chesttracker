@@ -22,6 +22,9 @@ test("private login, dashboard, admin and logout", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Euer Kreis. Deine Verwaltung." }),
   ).toBeVisible();
+  await expect(
+    page.getByText("Du verwaltest 1 von maximal 6 aktiven Konten."),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Spieler hinzufügen" }).click();
   await page.getByLabel("Benutzername", { exact: true }).fill("BrowserFriend");
   await page.getByLabel("Anzeigename", { exact: true }).fill("Testfreund");

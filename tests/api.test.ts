@@ -189,8 +189,8 @@ test("friend cannot write admin statistics or users", async () => {
     403,
   );
 });
-test("four active accounts maximum, case-insensitive login", async () => {
-  for (const n of ["Tim", "Noah"])
+test("six active accounts maximum, case-insensitive login", async () => {
+  for (const n of ["Tim", "Noah", "Janik", "Mia"])
     assert.equal(
       (await request("admin/users", "POST", { username: n, displayName: n }))
         .status,
@@ -199,7 +199,7 @@ test("four active accounts maximum, case-insensitive login", async () => {
   assert.equal(
     (
       await request("admin/users", "POST", {
-        username: "Fifth",
+        username: "Seventh",
         displayName: "No",
       })
     ).status,
@@ -215,6 +215,47 @@ test("four active accounts maximum, case-insensitive login", async () => {
       )
     ).status,
     200,
+  );
+});
+test("reactivation respects six active accounts and succeeds when a slot opens", async () => {
+  const {
+    rows: [tim],
+  } = await db().query("SELECT id FROM users WHERE username='Tim'");
+  assert.equal(
+    (await request("admin/users/" + tim.id, "PATCH", { enabled: false }))
+      .status,
+    200,
+  );
+  const replacement = await request("admin/users", "POST", {
+    username: "Reserve",
+    displayName: "Reserve",
+  });
+  assert.equal(replacement.status, 201);
+  assert.equal(
+    (await request("admin/users/" + tim.id, "PATCH", { enabled: true })).status,
+    409,
+  );
+  assert.equal(
+    (await db().query("SELECT enabled FROM users WHERE id=$1", [tim.id]))
+      .rows[0].enabled,
+    false,
+  );
+  assert.equal(
+    (
+      await request("admin/users/" + replacement.body.id, "PATCH", {
+        enabled: false,
+      })
+    ).status,
+    200,
+  );
+  assert.equal(
+    (await request("admin/users/" + tim.id, "PATCH", { enabled: true })).status,
+    200,
+  );
+  assert.equal(
+    (await db().query("SELECT COUNT(*)::int n FROM users WHERE enabled=true"))
+      .rows[0].n,
+    6,
   );
 });
 test("desktop gets short-lived access and rotating refresh tokens", async () => {

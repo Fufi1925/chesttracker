@@ -1,12 +1,12 @@
 # ChestTracker
 
-Private Truhenstatistik für Fufi und bis zu drei Freunde. Deutsche, responsive Website, gemeinsame API/PostgreSQL-Datenbank und selbstenthaltender Windows-Client mit kompaktem Overlay.
+Private Truhenstatistik für Fufi und bis zu fünf Freunde. Deutsche, responsive Website, gemeinsame API/PostgreSQL-Datenbank und selbstenthaltender Windows-Client mit kompaktem Overlay.
 
 ## Was funktioniert
 
 - Geschützte Übersicht, Spielerstatus, Matches, zeitlicher Eventverlauf, Rangliste, Profile und Admin-Verwaltung. Keine öffentliche Registrierung und keine Demo-Zahlen in der Produktionsdatenbank.
 - Argon2id, serverseitige Rollenprüfung, Pflicht-Passwortwechsel, Web-Cookies mit HttpOnly/SameSite/HTTPS, Desktop-Access-/Refresh-Sitzungen mit Widerruf und Rotation, persistente Ratenlimits.
-- Maximal vier aktive Konten. Änderungen an Konten, Matches und Ereignissen werden protokolliert. Summen werden aus gespeicherten Ereignissen abgeleitet.
+- Maximal sechs aktive Konten. Änderungen an Konten, Matches und Ereignissen werden protokolliert. Summen werden aus gespeicherten Ereignissen abgeleitet.
 - Windows-Overlay oben rechts, globaler Hotkey O/F8/F9, Tray, DPAPI-geschützte Sitzungen und dauerhafte Ereigniswarteschlange, idempotente Synchronisierung.
 - Konservativer Replay-Detektor mit Hysterese, lokalem Template-Abgleich und synthetischen Testfällen.
 

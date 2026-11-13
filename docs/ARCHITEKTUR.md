@@ -1,6 +1,6 @@
 # Architektur
 
-Für vier Nutzer werden Website und API gemeinsam auf Vercel betrieben. Next.js Route Handlers übernehmen Authentifizierung, Rechteprüfung, Validierung und Datenzugriff. PostgreSQL auf Neon ist die einzige gemeinsame Datenquelle. Die Datenbankadresse ist nur serverseitig verfügbar. Keine kontinuierlichen Bilddaten verlassen den Windows-PC.
+Für sechs Nutzer werden Website und API gemeinsam auf Vercel betrieben. Next.js Route Handlers übernehmen Authentifizierung, Rechteprüfung, Validierung und Datenzugriff. PostgreSQL auf Neon ist die einzige gemeinsame Datenquelle. Die Datenbankadresse ist nur serverseitig verfügbar. Keine kontinuierlichen Bilddaten verlassen den Windows-PC.
 
 ```mermaid
 flowchart LR
@@ -24,7 +24,7 @@ Desktop: 15 Minuten Access-Token, 30 Tage Refresh-Token, rotierende Refresh-Toke
 
 ## Datenkonsistenz
 
-`(user_id,client_event_id)` ist eindeutig. Pro Nutzer darf nur ein aktives Match bestehen. Serverseitige Transaktionen verhindern doppelte Erfassung, Vier-Konten-Rennen und Änderungen ohne Audit. Die Statistik zählt gespeicherte Events; dadurch ist nach Korrekturen kein anfälliger Summencache zu reparieren. Die Durchschnittsberechnung berücksichtigt nur abgeschlossene Matches; Gesamttruhen umfassen alle Events, auch aus unvollständigen Matches. Matchdiagramme zeigen die tatsächlichen Eventzeitpunkte.
+`(user_id,client_event_id)` ist eindeutig. Pro Nutzer darf nur ein aktives Match bestehen. Serverseitige Transaktionen verhindern doppelte Erfassung, Sechs-Konten-Rennen und Änderungen ohne Audit. Die Statistik zählt gespeicherte Events; dadurch ist nach Korrekturen kein anfälliger Summencache zu reparieren. Die Durchschnittsberechnung berücksichtigt nur abgeschlossene Matches; Gesamttruhen umfassen alle Events, auch aus unvollständigen Matches. Matchdiagramme zeigen die tatsächlichen Eventzeitpunkte.
 
 Die lokale Warteschlange speichert Befehle vor dem Versand und entfernt sie erst nach Erfolg. Jeder Befehl bleibt einem Server und Nutzer zugeordnet. Fehler werden nicht übersprungen. Start, Events und Matchende werden in dieser Reihenfolge übertragen. Nach Absturz wird ein gespeichertes aktives Replay beim Wiederanmelden als unvollständig mit dem letzten beobachteten Zeitpunkt abgeschlossen; es wird kein kompletter Spielausgang erfunden.
 

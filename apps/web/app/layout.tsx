@@ -3,7 +3,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "ChestTracker · Private Statistiken",
   description:
-    "Deine Matches. Eure Statistiken. Privater ChestTracker für vier Freunde.",
+    "Deine Matches. Eure Statistiken. Privater ChestTracker für sechs Personen.",
   robots: { index: false, follow: false },
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
