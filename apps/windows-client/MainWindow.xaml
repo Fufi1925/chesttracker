@@ -21,7 +21,7 @@
       <TextBlock Text="Passwort" FontSize="12" FontWeight="Medium" Foreground="#E0E5E5" Margin="0,0,0,10"/>
       <Grid Height="51">
        <PasswordBox x:Name="Password" AutomationProperties.Name="Passwort" MaxLength="128" Padding="14,13,48,13" PasswordChanged="Password_Changed"/>
-       <TextBox x:Name="VisiblePassword" AutomationProperties.Name="Passwort im Klartext" MaxLength="128" Padding="14,13,48,13" Visibility="Collapsed" TextChanged="VisiblePassword_Changed"/>
+       <TextBox x:Name="VisiblePassword" AutomationProperties.Name="Passwort im Klartext" MaxLength="128" IsUndoEnabled="False" Padding="14,13,48,13" Visibility="Collapsed" TextChanged="VisiblePassword_Changed"/>
        <Button x:Name="RevealPassword" Style="{StaticResource QuietButton}" Width="46" HorizontalAlignment="Right" Padding="11" Click="RevealPassword_Click" AutomationProperties.Name="Passwort anzeigen" ToolTip="Passwort anzeigen">
         <Grid Width="18" Height="18"><Path Data="M 1 9 C 5 2 13 2 17 9 C 13 16 5 16 1 9 Z M 11.5 9 A 2.5 2.5 0 1 1 6.5 9 A 2.5 2.5 0 1 1 11.5 9" Stroke="#AEB7BE" StrokeThickness="1.2"/><Path x:Name="EyeSlash" Data="M 2 16 L 16 2" Stroke="#AEB7BE" StrokeThickness="1.2" Visibility="Collapsed"/></Grid>
        </Button>
@@ -47,7 +47,7 @@
     <ScrollViewer x:Name="AccountScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
      <StackPanel Margin="26,22,26,22">
       <Grid>
-       <StackPanel><TextBlock Text="DEIN ACCOUNT" FontSize="9" Foreground="#A5B2B7"/><TextBlock x:Name="AccountName" Text="Dein Name" FontSize="27" FontWeight="SemiBold" Margin="0,5,0,0" MaxWidth="220" TextTrimming="CharacterEllipsis"/></StackPanel>
+       <StackPanel><TextBlock Text="DEIN ACCOUNT" FontSize="9" Foreground="#A5B2B7"/><TextBlock x:Name="AccountName" Text="Dein Name" FontSize="27" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="0,5,0,0" MaxWidth="220" TextTrimming="CharacterEllipsis"/></StackPanel>
        <Border HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="12" BorderBrush="#51636D" BorderThickness="1" Background="#B019252B" Padding="9,5" Margin="0,3,0,0"><StackPanel Orientation="Horizontal"><Ellipse x:Name="ServerDot" Fill="#89979D" Width="5" Height="5" Margin="0,0,6,0"/><TextBlock x:Name="ServerState" Text="Verbinden" FontSize="9" Foreground="#C6D0D1"/></StackPanel></Border>
       </Grid>
       <Border Background="{StaticResource GlassBrush}" BorderBrush="#5066797D" BorderThickness="1" CornerRadius="14" Padding="0,12" Margin="0,16,0,18">

@@ -38,10 +38,10 @@ public sealed class AmbientBackdrop : FrameworkElement
         if (ActualWidth <= 0 || ActualHeight <= 0) return;
         if (Coins)
         {
-            DrawCoin(dc, ActualWidth - 23, 102, 78, -24, .60);
-            DrawCoin(dc, 12, ActualHeight * .55, 61, 22, .50);
-            DrawCoin(dc, ActualWidth - 7, ActualHeight * .82, 88, -16, .40);
-            DrawCoin(dc, 57, ActualHeight - 3, 34, 31, .45);
+            DrawCoin(dc, ActualWidth - 23, 102, 78, -24, .38);
+            DrawCoin(dc, 12, ActualHeight * .55, 61, 22, .26);
+            DrawCoin(dc, ActualWidth - 7, ActualHeight * .82, 88, -16, .28);
+            DrawCoin(dc, 57, ActualHeight - 3, 34, 31, .25);
             return;
         }
         double t = motion ? elapsed.Elapsed.TotalSeconds : 1.15;
