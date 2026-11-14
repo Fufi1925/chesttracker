@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using Tesseract;
 using Xunit;
 using ChestTracker.Core;
+using TextBox = System.Windows.Controls.TextBox;
 namespace ChestTracker.Tests;
 public sealed class UiTests
 {
@@ -20,6 +21,11 @@ public sealed class UiTests
                 var window=new MainWindow(true);window.Show();window.UpdateLayout();
                 Assert.Equal(WindowState.Maximized,window.WindowState);
                 Assert.Equal(Visibility.Visible,((Grid)window.FindName("LoginView")).Visibility);
+                var password=(PasswordBox)window.FindName("Password");var revealed=(TextBox)window.FindName("VisiblePassword");var eye=(System.Windows.Controls.Button)window.FindName("RevealPassword");
+                password.Password="new-Oo-password-2026";eye.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+                Assert.Equal(password.Password,revealed.Text);Assert.Equal(Visibility.Visible,revealed.Visibility);
+                revealed.Text="edited-Oo-password-2026";eye.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+                Assert.Equal("edited-Oo-password-2026",password.Password);Assert.Equal(Visibility.Collapsed,revealed.Visibility);Assert.Empty(revealed.Text);password.Clear();
                 var motion=(System.Windows.Media.Animation.Storyboard)window.FindResource("BackdropMotion");motion.Begin(window,true);motion.Stop(window);
                 if(Windows.Graphics.Capture.GraphicsCaptureSession.IsSupported()){var item=CaptureInterop.ForWindow(new System.Windows.Interop.WindowInteropHelper(window).Handle);Assert.True(item.Size.Width>0&&item.Size.Height>0);}
                 var folder=Path.Combine(RepositoryRoot(),"artifacts/ui-preview");Directory.CreateDirectory(folder);Save(window,Path.Combine(folder,"login-fullscreen.png"));
@@ -31,8 +37,23 @@ public sealed class UiTests
                 Assert.Equal(Visibility.Collapsed,((Grid)window.FindName("LoginView")).Visibility);
                 Assert.Equal(Visibility.Visible,((Grid)window.FindName("AccountView")).Visibility);
                 Assert.False(((System.Windows.Controls.CheckBox)window.FindName("EnableCapture")).IsChecked);
+                Assert.True(((AmbientBackdrop)window.FindName("AccountBackdrop")).Tokens);
+                Assert.True(((ScrollViewer)window.FindName("AccountScroll")).ScrollableHeight<1,"Default account controls must fit the compact window.");
                 var background=(SolidColorBrush)window.Background;Assert.True(background.Color.R<30&&background.Color.G<30&&background.Color.B<30);
+                Assert.Equal(388,AmbientBackdrop.TokenArtwork.PixelWidth);Assert.True(AmbientBackdrop.TokenArtwork.IsFrozen);
+                var accountBackdrop=(AmbientBackdrop)window.FindName("AccountBackdrop");
+                Assert.Equal(SystemParameters.ClientAreaAnimation,accountBackdrop.AnimationActive);
+                Assert.False(((AmbientBackdrop)window.FindName("LoginBackdrop")).AnimationActive);
                 Save(window,Path.Combine(folder,"account-compact.png"));
+                if(SystemParameters.ClientAreaAnimation)
+                {
+                    var before=Pixels(Snapshot(window));Pump(900);var after=Pixels(Snapshot(window));
+                    Assert.False(before.SequenceEqual(after),"The visible token background must actually move.");
+                    Save(window,Path.Combine(folder,"account-floating.png"));
+                }
+                window.WindowState=WindowState.Minimized;Assert.False(accountBackdrop.AnimationActive);
+                window.WindowState=WindowState.Normal;window.UpdateLayout();
+                Assert.Equal(SystemParameters.ClientAreaAnimation,accountBackdrop.AnimationActive);
                 var overlay=new OverlayWindow();overlay.Update("Janik",GameState.IN_MATCH,5,true,false,true);
                 overlay.SetPeers(new[]{new OverlayPeer("lio","Lio",GameState.IN_MATCH,3),new OverlayPeer("johan","Johan",GameState.LOBBY,0)});
                 overlay.Show();overlay.UpdateLayout();
@@ -47,8 +68,11 @@ public sealed class UiTests
     }
     private static void Save(Window window,string path)
     {
-        var target=new RenderTargetBitmap((int)window.ActualWidth,(int)window.ActualHeight,96,96,PixelFormats.Pbgra32);target.Render(window);var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(target));using var file=File.Create(path);encoder.Save(file);
+        var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(Snapshot(window)));using var file=File.Create(path);encoder.Save(file);
     }
+    private static RenderTargetBitmap Snapshot(Window window){var target=new RenderTargetBitmap((int)window.ActualWidth,(int)window.ActualHeight,96,96,PixelFormats.Pbgra32);target.Render(window);return target;}
+    private static byte[] Pixels(BitmapSource image){var bytes=new byte[image.PixelWidth*image.PixelHeight*4];image.CopyPixels(bytes,image.PixelWidth*4,0);return bytes;}
+    private static void Pump(int milliseconds){var frame=new DispatcherFrame();var timer=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(milliseconds)};timer.Tick+=(_,_)=>{timer.Stop();frame.Continue=false;};timer.Start();Dispatcher.PushFrame(frame);}
     [Fact]public void BundledGermanEnglishModelsAndNativeOcrLoad()
     {
         var models=Path.Combine(RepositoryRoot(),".local/ocr/tessdata");
