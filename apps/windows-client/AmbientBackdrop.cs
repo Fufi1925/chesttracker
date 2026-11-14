@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Color = System.Windows.Media.Color;
 using Pen = System.Windows.Media.Pen;
@@ -8,15 +9,17 @@ using Point = System.Windows.Point;
 
 namespace ChestTracker;
 
-/// <summary>Local vector decoration, with animation only while the login is visible.</summary>
+/// <summary>Local wire sculpture and packaged Pirate Shop Token artwork; motion pauses when hidden or minimized.</summary>
 public sealed class AmbientBackdrop : FrameworkElement
 {
-    public static readonly DependencyProperty CoinsProperty = DependencyProperty.Register(nameof(Coins), typeof(bool), typeof(AmbientBackdrop), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
-    public bool Coins { get => (bool)GetValue(CoinsProperty); set => SetValue(CoinsProperty, value); }
+    public static readonly DependencyProperty TokensProperty = DependencyProperty.Register(nameof(Tokens), typeof(bool), typeof(AmbientBackdrop), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+    public bool Tokens { get => (bool)GetValue(TokensProperty); set => SetValue(TokensProperty, value); }
     private readonly DispatcherTimer timer = new() { Interval = TimeSpan.FromMilliseconds(50) };
     private readonly Stopwatch elapsed = new();
     private Window? owner;
     private bool motion;
+    internal bool AnimationActive => timer.IsEnabled;
+    internal static BitmapSource TokenArtwork { get; } = LoadTokenArtwork();
     public AmbientBackdrop()
     {
         IsHitTestVisible = false; ClipToBounds = true;
@@ -28,7 +31,7 @@ public sealed class AmbientBackdrop : FrameworkElement
     private void OwnerStateChanged(object? sender, EventArgs e) => UpdateMotion();
     private void UpdateMotion()
     {
-        motion = IsLoaded && IsVisible && !Coins && owner?.WindowState != WindowState.Minimized && SystemParameters.ClientAreaAnimation;
+        motion = IsLoaded && IsVisible && owner?.WindowState != WindowState.Minimized && SystemParameters.ClientAreaAnimation;
         if (motion) { elapsed.Start(); timer.Start(); } else { timer.Stop(); elapsed.Stop(); }
         InvalidateVisual();
     }
@@ -36,15 +39,15 @@ public sealed class AmbientBackdrop : FrameworkElement
     {
         base.OnRender(dc);
         if (ActualWidth <= 0 || ActualHeight <= 0) return;
-        if (Coins)
+        double t = motion ? elapsed.Elapsed.TotalSeconds : 1.15;
+        if (Tokens)
         {
-            DrawCoin(dc, ActualWidth - 23, 102, 78, -24, .38);
-            DrawCoin(dc, 12, ActualHeight * .55, 61, 22, .26);
-            DrawCoin(dc, ActualWidth - 7, ActualHeight * .82, 88, -16, .28);
-            DrawCoin(dc, 57, ActualHeight - 3, 34, 31, .25);
+            DrawToken(dc, ActualWidth - 23, 102, 78, -24, .34, t, 0);
+            DrawToken(dc, 12, ActualHeight * .55, 61, 22, .24, t, 1.7);
+            DrawToken(dc, ActualWidth - 7, ActualHeight * .82, 88, -16, .26, t, 3.1);
+            DrawToken(dc, 57, ActualHeight - 3, 34, 31, .22, t, 4.4);
             return;
         }
-        double t = motion ? elapsed.Elapsed.TotalSeconds : 1.15;
         for (int i = 0; i < 31; i++) DrawWire(dc, i / 31d * Math.Tau, t, true);
         for (int i = 0; i < 19; i++) DrawWire(dc, i / 19d * Math.Tau, t, false);
     }
@@ -75,25 +78,23 @@ public sealed class AmbientBackdrop : FrameworkElement
         double scale = small ? Math.Min(ActualWidth * .43, 210) : Math.Min(Math.Min(ActualWidth * .22, ActualHeight * .35), 300);
         return new Point(ActualWidth * (small ? .5 : .30) + x1 * scale * perspective, ActualHeight * (small ? .27 : .49) + y2 * scale * perspective);
     }
-    private static void DrawCoin(DrawingContext dc, double x, double y, double radius, double angle, double opacity)
+    private static BitmapSource LoadTokenArtwork()
     {
-        dc.PushTransform(new TranslateTransform(x, y)); dc.PushTransform(new RotateTransform(angle)); dc.PushTransform(new ScaleTransform(1, .78)); dc.PushOpacity(opacity);
-        dc.DrawEllipse(new SolidColorBrush(Color.FromRgb(20, 38, 47)), new Pen(new SolidColorBrush(Color.FromRgb(76, 106, 115)), 2), new Point(0, 5), radius, radius);
-        dc.DrawEllipse(new LinearGradientBrush(Color.FromRgb(81, 105, 114), Color.FromRgb(21, 38, 49), 120), new Pen(new SolidColorBrush(Color.FromRgb(149, 178, 182)), 1.2), new Point(), radius, radius);
-        dc.DrawEllipse(new SolidColorBrush(Color.FromRgb(30, 51, 61)), new Pen(new SolidColorBrush(Color.FromRgb(97, 136, 148)), radius * .035), new Point(), radius * .80, radius * .80);
-        dc.DrawEllipse(null, new Pen(new SolidColorBrush(Color.FromRgb(78, 115, 127)), .8), new Point(), radius * .69, radius * .69);
-        var mark = new StreamGeometry();
-        using (var path = mark.Open())
-        {
-            path.BeginFigure(new Point(-radius * .34, -radius * .30), false, false);
-            path.LineTo(new Point(0, radius * .32), true, false); path.LineTo(new Point(radius * .34, -radius * .30), true, false);
-        }
-        dc.DrawGeometry(null, new Pen(new SolidColorBrush(Color.FromRgb(175, 204, 206)), radius * .12) { StartLineCap = PenLineCap.Square, EndLineCap = PenLineCap.Square, LineJoin = PenLineJoin.Round }, mark);
-        for (int i = 0; i < 16; i++)
-        {
-            double a = i * Math.Tau / 16;
-            dc.DrawLine(new Pen(new SolidColorBrush(Color.FromArgb(90, 176, 201, 202)), 1), new Point(Math.Cos(a) * radius * .87, Math.Sin(a) * radius * .87), new Point(Math.Cos(a) * radius * .94, Math.Sin(a) * radius * .94));
-        }
-        dc.Pop(); dc.Pop(); dc.Pop(); dc.Pop();
+        var image = new BitmapImage();
+        image.BeginInit(); image.CacheOption = BitmapCacheOption.OnLoad;
+        image.UriSource = new Uri("pack://application:,,,/ChestTracker;component/Assets/pirate-shop-token.png", UriKind.Absolute);
+        image.EndInit(); image.Freeze();
+        return image;
+    }
+    private static void DrawToken(DrawingContext dc, double x, double y, double radius, double angle, double opacity, double t, double phase)
+    {
+        double drift = Math.Sin(t * .32 + phase) * 12;
+        double bob = Math.Sin(t * .45 + phase) * 14;
+        double rotation = angle + Math.Sin(t * .24 + phase) * 8;
+        dc.PushOpacity(opacity);
+        dc.PushTransform(new TranslateTransform(x + drift, y + bob));
+        dc.PushTransform(new RotateTransform(rotation));
+        dc.DrawImage(TokenArtwork, new Rect(-radius, -radius, radius * 2, radius * 2));
+        dc.Pop(); dc.Pop(); dc.Pop();
     }
 }

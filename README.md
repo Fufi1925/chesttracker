@@ -10,7 +10,7 @@ Private Truhenstatistik für Fufi und bis zu fünf Freunde. Deutsche, responsive
 - Windows-Overlay oben rechts, globaler Hotkey O/F8/F9, Tray, DPAPI-geschützte Sitzungen und dauerhafte Ereigniswarteschlange, idempotente Synchronisierung.
 - Konservativer Replay-Detektor mit Hysterese, lokalem Template-Abgleich und synthetischen Testfällen.
 
-**Windows v1.3.0 zeigt andere angemeldete Spieler mit geöffnetem Fortnite unter deiner eigenen Overlay-Zeile.** Die lokale Erkennung wurde mit einer zweiten Aufnahme für goldene/violette EP-Meldungen und lootgebende Holzkisten erweitert. 95 % allgemeine Genauigkeit sind noch nicht nachgewiesen. Die Bildanalyse muss im Accountfenster aktiviert werden. [Referenz, Messungen und Grenzen](docs/DETECTION_REFERENCE.md).
+**Windows v1.3.1 zeigt andere angemeldete Spieler mit geöffnetem Fortnite unter deiner eigenen Overlay-Zeile.** Neu ist die Glas-Oberfläche nach der Folio-Vorlage mit schwebenden goldenen Pirate Shop Token im Accountfenster. Die lokale Erkennung wurde mit einer zweiten Aufnahme für goldene/violette EP-Meldungen und lootgebende Holzkisten erweitert. 95 % allgemeine Genauigkeit sind noch nicht nachgewiesen. Die Bildanalyse muss im Accountfenster aktiviert werden. [Referenz, Messungen und Grenzen](docs/DETECTION_REFERENCE.md).
 
 ## Windows herunterladen
 
